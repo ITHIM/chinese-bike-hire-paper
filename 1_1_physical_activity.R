@@ -3,6 +3,7 @@
 
 #Load libraries
 library(tidyverse)
+library(stringr)
 
 # Check if drpa package is installed, if not then install it
 if (!require("drpa",character.only = TRUE)) {
@@ -58,23 +59,28 @@ global_path_ithimr <- file.path(find.package('ithimr',lib.loc=.libPaths()), 'ext
 global_path_ithimr <- paste0(global_path_ithimr, "/")
 
 # Read updated disease outcomes lookup from ITHIM-R package
-# Use only all-cause-mortaliy as an example
 DISEASE_INVENTORY <- read.csv(paste0(global_path_ithimr,"dose_response/disease_outcomes_lookup.csv"))
+
+# Keep only those disease with PA relationship
+DISEASE_INVENTORY <- DISEASE_INVENTORY %>% filter(physical_activity == 1)
+
+# Remove missing diseases (that don't exist in the GBD burden data)
+DISEASE_INVENTORY <- DISEASE_INVENTORY %>% filter(!GBD_name %in% c("Myeloma", "Head and neck cancer", "Gastric cardia cancer"))
+
 # Make AP 0 for now
 DISEASE_INVENTORY$air_pollution <- 0
-# Keep only all-cause-mortality
-DISEASE_INVENTORY <- DISEASE_INVENTORY %>% mutate(physical_activity = ifelse(acronym == "all_cause", 1, 0))
-DISEASE_INVENTORY <- DISEASE_INVENTORY[1,]
 
-# Create an example burden dataset
-DISEASE_BURDEN <- data.frame (measure  = c(rep("YLLs (Years of Life Lost)", each = 10), rep("Deaths", each = 10)), 
-                               sex = c("male", "female"),
-                               age = c("<25","25-30", "31-35","36-40","41-59"),
-                               cause= "All causes",
-                               population = "0",
-                               min_age = c(0, 25, 31, 36, 41),
-                               max_age = c(25, 30, 35, 40, 59),
-                               burden = (15931.384 / 10))
+# Read burden data
+DISEASE_BURDEN <- readxl::read_excel("data/GBD_Province level_Final version.xlsx")
+
+# Filter it for China - as an example, rename columns to expected ones
+# Also mutate YLLs to its full form
+# Only keep those causes that exist in the DISEASE_INVENTORY
+DISEASE_BURDEN <<- DISEASE_BURDEN %>% rename(sex = sex_name, cause = cause_name, burden = val, age_cat = age_name, 
+                                             measure = measure_name) %>% mutate(measure = 
+                                                                                  ifelse(measure == "YLLs", "YLLs (Years of Life Lost)", 
+                                                                                         measure)) %>% 
+  filter(cause %in% DISEASE_INVENTORY$GBD_name & location_name == "China")
 
 # Calcualte RR for PA
 ind_pa <- ithimr::gen_pa_rr(rr_pp)
