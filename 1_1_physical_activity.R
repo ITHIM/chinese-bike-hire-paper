@@ -93,3 +93,34 @@ ind_pa <- ithimr::gen_pa_rr(rr_pp)
 
 # Calculate health burden for deaths and YLLs
 health_burden_list <- ithimr::health_burden(ind_pa, combined_AP_PA = F)
+
+# Print plots of health burden - by age and gender groups
+for (type in names(health_burden_list)){
+  # Read burden data
+  burden_df <- health_burden_list[[type]]
+  
+  # Rename columns - remove unnecessary bits
+  plot_cols <- sapply(names(burden_df),function(x)grepl('scen',x))
+  col_names <- str_replace_all(names(burden_df[plot_cols]), paste0(paste0("scen_", type, "_"), '|pa_ap_|ap_|pa_'), '')
+  names(burden_df)[3:15] <- col_names
+  
+  # Change form
+  burden_df <- pivot_longer(burden_df, cols = -c(sex, age_cat))
+  
+  # Using ggplot, create a bar chart
+  print(ggplot(burden_df) +
+          aes(x = name, fill = age_cat, weight = value) +
+          geom_bar(position = "dodge") +
+          scale_fill_hue(direction = 1) +
+          labs(
+            x = "Disease/cause",
+            y = ifelse(type == "deaths", "# of deaths", "Years of Life Lost (YLLs)"),
+            title = paste("Health Burden - ", ifelse(type == "deaths", "Deaths", "Years of Life Lost (YLLs)"))
+          ) +
+          coord_flip() +
+          theme_minimal() +
+          facet_wrap(vars(sex))
+  )
+  
+  
+}
