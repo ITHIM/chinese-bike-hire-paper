@@ -108,7 +108,6 @@ bikepo$cart2530f <- bikepo$milec*bikepo$mil2530fr*10000/(30/60)
 bikepo$cart3135f <- bikepo$milec*bikepo$mil3135fr*10000/(30/60)
 bikepo$cart3640f <- bikepo$milec*bikepo$mil3640fr*10000/(30/60)
 bikepo$cart40f <- bikepo$milec*bikepo$mil40fr*10000/(30/60)
-
 ###(3)Travel MET-hour before and after travel mode shift per week(changed)####
 ##Travel MET-hour before travel mode shift per week
 bikepo$tmetnoshared25m <- (bikepo$walkt25m*(3.6-1)+bikepo$biket25m*(5.4-1))/(bikepo$wau*10000*bikepo$ager25m)/60
