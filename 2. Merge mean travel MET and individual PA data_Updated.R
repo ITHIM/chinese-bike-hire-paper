@@ -34,7 +34,7 @@ bikepo <- mutate(bikepo,
 
 #We assume that the average distance of 0.25km for those proportion of ride distance less than 0.5km,
 #and 0.75km for 0.5-1km, and so on
-#Since we don¡¯t have a record of every ride
+#Since we donÂ¡Â¯t have a record of every ride
 #Unit: 10 thousand due to the unit in wts is 10 thousand
 
 ####*1.Data calculation*####
@@ -111,16 +111,16 @@ bikepo$cart40f <- bikepo$milec*bikepo$mil40fr*10000/(30/60)
 
 ###(3)Travel MET-hour before and after travel mode shift per week(changed)####
 ##Travel MET-hour before travel mode shift per week
-bikepo$tmetnoshared25m <- (bikepo$walkt25m*3.6+bikepo$biket25m*5.4)/(bikepo$wau*10000*bikepo$ager25m)/60
-bikepo$tmetnoshared2630m <- (bikepo$walkt2530m*3.6+bikepo$biket2530m*5.4)/(bikepo$wau*10000*bikepo$ager2630m)/60
-bikepo$tmetnoshared3135m <- (bikepo$walkt3135m*3.6+bikepo$biket3135m*5.4)/(bikepo$wau*10000*bikepo$ager3135m)/60
-bikepo$tmetnoshared3640m <- (bikepo$walkt3640m*3.6+bikepo$biket3640m*5.4)/(bikepo$wau*10000*bikepo$ager3640m)/60
-bikepo$tmetnoshared41m <- (bikepo$walkt40m*3.6+bikepo$biket40m*5.4)/(bikepo$wau*10000*bikepo$ager41m)/60
-bikepo$tmetnoshared25f <- (bikepo$walkt25f*3.6+bikepo$biket25f*5.4)/(bikepo$wau*10000*bikepo$ager25f)/60
-bikepo$tmetnoshared2630f <- (bikepo$walkt2530f*3.6+bikepo$biket2530f*5.4)/(bikepo$wau*10000*bikepo$ager2630f)/60
-bikepo$tmetnoshared3135f <- (bikepo$walkt3135f*3.6+bikepo$biket3135f*5.4)/(bikepo$wau*10000*bikepo$ager3135f)/60
-bikepo$tmetnoshared3640f <- (bikepo$walkt3640f*3.6+bikepo$biket3640f*5.4)/(bikepo$wau*10000*bikepo$ager3640f)/60
-bikepo$tmetnoshared41f <- (bikepo$walkt40f*3.6+bikepo$biket40f*5.4)/(bikepo$wau*10000*bikepo$ager41f)/60
+bikepo$tmetnoshared25m <- (bikepo$walkt25m*(3.6-1)+bikepo$biket25m*(5.4-1))/(bikepo$wau*10000*bikepo$ager25m)/60
+bikepo$tmetnoshared2630m <- (bikepo$walkt2530m*(3.6-1)+bikepo$biket2530m*(5.4-1))/(bikepo$wau*10000*bikepo$ager2630m)/60
+bikepo$tmetnoshared3135m <- (bikepo$walkt3135m*(3.6-1)+bikepo$biket3135m*(5.4-1))/(bikepo$wau*10000*bikepo$ager3135m)/60
+bikepo$tmetnoshared3640m <- (bikepo$walkt3640m*(3.6-1)+bikepo$biket3640m*(5.4-1))/(bikepo$wau*10000*bikepo$ager3640m)/60
+bikepo$tmetnoshared41m <- (bikepo$walkt40m*(3.6-1)+bikepo$biket40m*(5.4-1))/(bikepo$wau*10000*bikepo$ager41m)/60
+bikepo$tmetnoshared25f <- (bikepo$walkt25f*(3.6-1)+bikepo$biket25f*(5.4-1))/(bikepo$wau*10000*bikepo$ager25f)/60
+bikepo$tmetnoshared2630f <- (bikepo$walkt2530f*(3.6-1)+bikepo$biket2530f*(5.4-1))/(bikepo$wau*10000*bikepo$ager2630f)/60
+bikepo$tmetnoshared3135f <- (bikepo$walkt3135f*(3.6-1)+bikepo$biket3135f*(5.4-1))/(bikepo$wau*10000*bikepo$ager3135f)/60
+bikepo$tmetnoshared3640f <- (bikepo$walkt3640f*(3.6-1)+bikepo$biket3640f*(5.4-1))/(bikepo$wau*10000*bikepo$ager3640f)/60
+bikepo$tmetnoshared41f <- (bikepo$walkt40f*(3.6-1)+bikepo$biket40f*(5.4-1))/(bikepo$wau*10000*bikepo$ager41f)/60
 mean(bikepo$tmetnoshared25m,na.rm = T) 
 mean(bikepo$tmetnoshared2630m,na.rm = T) 
 mean(bikepo$tmetnoshared3135m,na.rm = T) 
@@ -132,16 +132,16 @@ mean(bikepo$tmetnoshared3135f,na.rm = T)
 mean(bikepo$tmetnoshared3640f,na.rm = T) 
 mean(bikepo$tmetnoshared41f,na.rm = T)  
 ##Travel MET-hour after travel mode shift per week
-bikepo$tmetshared25m <-(bikepo$mil25m*10000/(bikepo$mil/bikepo$wtt)*5.4)/(bikepo$wau*10000*bikepo$ager25m)/60
-bikepo$tmetshared2630m <- (bikepo$mil2530m*10000/(bikepo$mil/bikepo$wtt)*5.4)/(bikepo$wau*10000*bikepo$ager2630m)/60
-bikepo$tmetshared3135m <- (bikepo$mil3135m*10000/(bikepo$mil/bikepo$wtt)*5.4)/(bikepo$wau*10000*bikepo$ager3135m)/60
-bikepo$tmetshared3640m <- (bikepo$mil3640m*10000/(bikepo$mil/bikepo$wtt)*5.4)/(bikepo$wau*10000*bikepo$ager3640m)/60
-bikepo$tmetshared41m <- (bikepo$mil40m*10000/(bikepo$mil/bikepo$wtt)*5.4)/(bikepo$wau*10000*bikepo$ager41m)/60
-bikepo$tmetshared25f <- (bikepo$mil25f*10000/(bikepo$mil/bikepo$wtt)*5.4)/(bikepo$wau*10000*bikepo$ager25f)/60
-bikepo$tmetshared2630f <- (bikepo$mil2530f*10000/(bikepo$mil/bikepo$wtt)*5.4)/(bikepo$wau*10000*bikepo$ager2630f)/60
-bikepo$tmetshared3135f <- (bikepo$mil3135f*10000/(bikepo$mil/bikepo$wtt)*5.4)/(bikepo$wau*10000*bikepo$ager3135f)/60
-bikepo$tmetshared3640f <- (bikepo$mil3640f*10000/(bikepo$mil/bikepo$wtt)*5.4)/(bikepo$wau*10000*bikepo$ager3640f)/60
-bikepo$tmetshared41f <- (bikepo$mil40f*10000/(bikepo$mil/bikepo$wtt)*5.4)/(bikepo$wau*10000*bikepo$ager41f)/60
+bikepo$tmetshared25m <-(bikepo$mil25m*10000/(bikepo$mil/bikepo$wtt)*(5.4-1))/(bikepo$wau*10000*bikepo$ager25m)/60
+bikepo$tmetshared2630m <- (bikepo$mil2530m*10000/(bikepo$mil/bikepo$wtt)*(5.4-1))/(bikepo$wau*10000*bikepo$ager2630m)/60
+bikepo$tmetshared3135m <- (bikepo$mil3135m*10000/(bikepo$mil/bikepo$wtt)*(5.4-1))/(bikepo$wau*10000*bikepo$ager3135m)/60
+bikepo$tmetshared3640m <- (bikepo$mil3640m*10000/(bikepo$mil/bikepo$wtt)*(5.4-1))/(bikepo$wau*10000*bikepo$ager3640m)/60
+bikepo$tmetshared41m <- (bikepo$mil40m*10000/(bikepo$mil/bikepo$wtt)*(5.4-1))/(bikepo$wau*10000*bikepo$ager41m)/60
+bikepo$tmetshared25f <- (bikepo$mil25f*10000/(bikepo$mil/bikepo$wtt)*(5.4-1))/(bikepo$wau*10000*bikepo$ager25f)/60
+bikepo$tmetshared2630f <- (bikepo$mil2530f*10000/(bikepo$mil/bikepo$wtt)*(5.4-1))/(bikepo$wau*10000*bikepo$ager2630f)/60
+bikepo$tmetshared3135f <- (bikepo$mil3135f*10000/(bikepo$mil/bikepo$wtt)*(5.4-1))/(bikepo$wau*10000*bikepo$ager3135f)/60
+bikepo$tmetshared3640f <- (bikepo$mil3640f*10000/(bikepo$mil/bikepo$wtt)*(5.4-1))/(bikepo$wau*10000*bikepo$ager3640f)/60
+bikepo$tmetshared41f <- (bikepo$mil40f*10000/(bikepo$mil/bikepo$wtt)*(5.4-1))/(bikepo$wau*10000*bikepo$ager41f)/60
 mean(bikepo$tmetshared25m,na.rm = T) 
 mean(bikepo$tmetshared2630m,na.rm = T) 
 mean(bikepo$tmetshared3135m,na.rm = T) 
