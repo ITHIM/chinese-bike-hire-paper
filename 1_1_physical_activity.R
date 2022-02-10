@@ -18,22 +18,11 @@ library(ithimr)
 mmets <- read_csv("data/Merged MET result_Individual.csv")
 
 # Rename mmets column
-mmets <- mmets %>% rename(base_mmets = METnoshared, scen_mmets = METshared)
-
-## Calculate RR using DRPA package for all-cause-mortality
-# Baseline
-rr_base <- drpa::dose_response(cause = "all-cause-mortality", outcome_type = "fatal", mmets$base_mmets)
-rr_base_mean <- mean(rr_base$rr)
-# Scenario
-rr_scen <- drpa::dose_response(cause = "all-cause-mortality", outcome_type = "fatal", mmets$scen_mmets)
-rr_scen_mean <- mean(rr_scen$rr)
+mmets <- mmets %>% rename(base_mmet = METnoshared, scen_mmet = METshared)
 
 # Create demographics dataset out of mmets
-demographics <- mmets %>% dplyr::select(age, Idind) %>% rename(participant_id = Idind) %>% 
+mmets <- mmets %>% rename(participant_id = Idind) %>% 
   mutate(sex = ifelse(mmets$GENDER == 1, "male", "female"), age_cat = mmets$agegroup)
-
-## Create a single dataset with baseline and scenario per person overall RR for MMETs
-rr_pp <- cbind(demographics, rr_base) %>% rename(base_mmet = rr) %>% cbind(rr_scen) %>% rename(scen_mmet = rr)
 
 # Create short names for baseline and scenario
 SCEN_SHORT_NAME <- c("base", "scen")
@@ -83,7 +72,7 @@ DISEASE_BURDEN <<- DISEASE_BURDEN %>% rename(sex = sex_name, cause = cause_name,
   filter(cause %in% DISEASE_INVENTORY$GBD_name & location_name == "China")
 
 # Calcualte RR for PA
-ind_pa <- ithimr::gen_pa_rr(rr_pp)
+ind_pa <- ithimr::gen_pa_rr(mmets)
 
 # # Calculate RR for AP
 # ind_ap <- ithimr::gen_ap_rr(rr_pp)
