@@ -15,7 +15,7 @@ library(drpa)
 library(ithimr)
 
 # Import mmets per person
-mmets <- read_csv("data/Merged MET result_Individual.csv")
+mmets <- read_csv("data/PA merged_Individual result.csv")
 
 # Rename mmets column
 mmets <- mmets %>% rename(base_mmet = METnoshared, scen_mmet = METshared)
