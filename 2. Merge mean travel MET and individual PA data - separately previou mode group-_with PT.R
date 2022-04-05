@@ -274,7 +274,7 @@ mean(bikepo$mil/bikepo$wtt,
 mean(bikepo$pttshared25m+bikepo$pttshared2530m+bikepo$pttshared3135m+bikepo$pttshared3640m+bikepo$pttshared41m+bikepo$pttshared25f+bikepo$pttshared2530f+bikepo$pttshared3135f+bikepo$pttshared3640f+bikepo$pttshared41f,
      na.rm = T)
 
-下一步分组计算各组的MMET并输出表格，需要看bus的MMET是多少，不管为0还是2.3，都不太对
+#下一步分组计算各组的MMET并输出表格，需要看bus的MMET是多少，不管为0还是2.3，都不太对
 ###(3)Travel MET-hour of each group before and after travel mode shift per week(changed)####
 ##Total
 #Travel MET-hour before travel mode shift per week
@@ -586,7 +586,7 @@ SEPTMET1 <- merge(meanTTMET,meanPTMET,by=c("agegroup","GENDER"))
 SEPTMET2 <- merge(SEPTMET1,meanCTMET,by=c("agegroup","GENDER"))
 SEPTMET3 <- merge(SEPTMET2,meanBTMET,by=c("agegroup","GENDER"))
 SEPTMET <- merge(SEPTMET3,meanWTMET,by=c("agegroup","GENDER"))
-write.csv(SEPTMET,file="Mean travel MET by wlaking driving biking per week.csv",
+write.csv(SEPTMET,file="./data/Mean travel MET by wlaking driving biking per week.csv",
           row.names = F)
 
 
@@ -596,9 +596,9 @@ write.csv(SEPTMET,file="Mean travel MET by wlaking driving biking per week.csv",
 ###(1)Link age, gender, PA by ID####
 ##Age,gender,PA are scattered in three data sets, but they can be linked by ID
 
-import("PA surveys_pub_12.sas7bdat")->pub
-import("PA survey mast_pub_12.sas7bdat")->mast
-import("PA survey pact.sas7bdat")->pact
+import("./data/PA surveys_pub_12.sas7bdat")->pub
+import("./data/PA survey mast_pub_12.sas7bdat")->mast
+import("./data/PA survey pact.sas7bdat")->pact
 names(pub)
 names(mast)
 names(pact)
@@ -639,7 +639,7 @@ PA$Tsed<-{PA$U340_MN*5+PA$U341_MN*2+PA$U343_MN*5+PA$U344_MN*2+PA$U509_MN*5
   +PA$U510_MN*2+PA$U346_MN*5+PA$U347_MN*2+PA$U411_MN*5+PA$U412_MN*2
   +PA$U414_MN*5+PA$U415_MN*2+PA$U417_MN*5+PA$U418_MN*2+PA$U352A_MN*5+PA$U353A_MN*2}
 #Saving the aggregated PA data
-write.csv(PA,file="Non-Occupational PA time_Individual")
+write.csv(PA,file="./data/Non-Occupational PA time_Individual.csv")
 
 ###(2)Calculate non-travel MET*hour per week####
 ##MET per week of each activity variable
@@ -672,7 +672,7 @@ PAbackground%>%ggplot(aes(x=age,y=MET,color=factor(GENDER)))+geom_point()+labs(y
 #MET per week by age and gender
 PAbackground%>%group_by(agegroup,GENDER)%>%summarise(AverageMET=mean(MET,na.rm = T))
 ggplot(PAbackground,aes(x=age,y=MET,color=factor(GENDER)))+geom_smooth()+xlim(0,100)+labs(y="MET-h/week")
-write.csv(PAbackground,"./include PT/PA backgroud_Individual.csv")
+write.csv(PAbackground,"./data/PA backgroud_Individual.csv")
 
 
 ####***********************Merge the mean values of travel MET and individual physical activity data by age and gender**************************####
@@ -681,7 +681,7 @@ PAbackground$mode<-sample(c(1,2,3,4),8471,replace = TRUE,prob=c(16.4,9.3,11.1,63
 
 ##population weight, according to the background individual count and active users by age,gender,and mode 
 count<-PAbackground%>%group_by(agegroup,GENDER)%>%count(mode)
-TMET <- read.csv("./include PT/Mean travel MET by wlaking driving biking per week for merge.csv")
+TMET <- read.csv("./data/Mean travel MMET by wlaking driving biking per week for merge.csv")
 TMET2<-merge(TMET,count,by=c("agegroup","GENDER","mode"))
 TMET2$popweight<-round(TMET2$popsize/TMET2$n)
 ##merge TMET and individual PA
@@ -689,4 +689,4 @@ PAmerged<-merge(PAbackground,TMET2,by=c("agegroup","GENDER","mode"))
 ##calculate the total MET for shared and noshared scenarios
 PAmerged$METnoshared<-PAmerged$MET+PAmerged$tmetnoshared
 PAmerged$METshared<-PAmerged$MET+PAmerged$tmetshared
-write.csv(PAmerged,"./include PT/PA merged_Individual.csv")
+write.csv(PAmerged,"./data/PA merged_Individual.csv")
