@@ -96,7 +96,7 @@ for (type in names(health_burden_list)){
   # Change form
   burden_df <- pivot_longer(burden_df, cols = -c(sex, age_cat))
   
-  write_csv(burden_df, paste0("./data/health-burden-", type, "-df.csv"))
+  write_csv(burden_df, paste0("./output/health-burden-", type, "-df.csv"))
   
   # Using ggplot, create a bar chart
   burden_graph <- ggplot(burden_df) +
@@ -114,7 +114,7 @@ for (type in names(health_burden_list)){
   
   print(burden_graph)
   
-  ggsave(filename = paste0("./data/health-burden-", type, ".png"), burden_graph,
+  ggsave(filename = paste0("./output/health-burden-", type, ".png"), burden_graph,
          width = 10, height = 4, dpi = 300, units = "in", device='png'
   )
   
