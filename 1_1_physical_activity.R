@@ -96,19 +96,26 @@ for (type in names(health_burden_list)){
   # Change form
   burden_df <- pivot_longer(burden_df, cols = -c(sex, age_cat))
   
+  write_csv(burden_df, paste0("./data/health-burden-", type, "-df.csv"))
+  
   # Using ggplot, create a bar chart
-  print(ggplot(burden_df) +
-          aes(x = name, fill = age_cat, weight = value) +
-          geom_bar(position = "dodge") +
-          scale_fill_hue(direction = 1) +
-          labs(
-            x = "Disease/cause",
-            y = ifelse(type == "deaths", "# of deaths", "Years of Life Lost (YLLs)"),
-            title = paste("Health Burden - ", ifelse(type == "deaths", "Deaths", "Years of Life Lost (YLLs)"))
-          ) +
-          coord_flip() +
-          theme_minimal() +
-          facet_wrap(vars(sex))
+  burden_graph <- ggplot(burden_df) +
+    aes(x = name, fill = age_cat, weight = value) +
+    geom_bar(position = "dodge") +
+    scale_fill_hue(direction = 1) +
+    labs(
+      x = "Disease/cause",
+      y = ifelse(type == "deaths", "# of deaths", "Years of Life Lost (YLLs)"),
+      title = paste("Health Burden - ", ifelse(type == "deaths", "Averted number of deaths", "Reduction in Years of Life Lost (YLLs)"))
+    ) +
+    coord_flip() +
+    theme_minimal() +
+    facet_wrap(vars(sex))
+  
+  print(burden_graph)
+  
+  ggsave(filename = paste0("./data/health-burden-", type, ".png"), burden_graph,
+         width = 10, height = 4, dpi = 300, units = "in", device='png'
   )
   
   
