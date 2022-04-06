@@ -6,8 +6,14 @@ rm(list=ls())
 # getwd()
 # setwd("E:/Rwork/code to James/changed/no bus")
 
-#Required package
-library(dplyr);library(openxlsx);library(ggplot2);library(tidyverse);library(rio);library(dbplyr)
+#Required packages
+library(dplyr)
+library(openxlsx)
+library(ggplot2)
+library(tidyverse)
+library(rio)
+library(dbplyr)
+
 ###(1)imported data####
 #bicycle data
 biked <- read.csv("./data/bikedata210415.csv",stringsAsFactors = F)
@@ -46,7 +52,7 @@ mean(bikepo$milew)+mean(bikepo$mileb)+mean(bikepo$milec)+mean(bikepo$milep)
 ###--Users--###
 
 ###--Active number of different mode by age and gender--###
-#active users of each modes are ontained based on the online survey
+#active users of each modes are obtained based on the online survey
 bikepo$acw <- 0.632*bikepo$wau*10000  #users walking before 
 bikepo$acb <- 0.111*bikepo$wau*10000 #users biking before
 bikepo$acc <- 0.093*bikepo$wau*10000  #users driving before
@@ -110,7 +116,7 @@ bikepo$acb3135f<-bikepo$acb*bikepo$ager3135f
 bikepo$acb3640f<-bikepo$acb*bikepo$ager3640f
 bikepo$acb41f<-bikepo$acb*bikepo$ager41f
 mean(bikepo$acb25m)+mean(bikepo$acb2630m)+mean(bikepo$acb3135m)+mean(bikepo$acb3640m)+mean(bikepo$acb41m)+mean(bikepo$acb25f)+mean(bikepo$acb2630f)+mean(bikepo$acb3135f)+mean(bikepo$acb3640f)+mean(bikepo$acb41f)
-##Drving
+##Driving
 #gender-age distribution(10 type)
 bikepo$acc25m<-bikepo$acc*bikepo$ager25m
 bikepo$acc2630m<-bikepo$acc*bikepo$ager2630m
@@ -146,7 +152,7 @@ bikepo$walkt <- bikepo$milew*10000/(5/60)
 #The walking speed was set as 5km/h,
 #10000 is the distance unit(10 thousand km), 60 is the conversion of hour and minute in speed
 bikepo$biket <- bikepo$mileb*10000/(bikepo$mil/bikepo$wtt)
-#The riding speed was extract from actual data
+#The riding speed was extracted from actual data
 bikepo$cart <- bikepo$milec*10000/(30/60)
 #The driving speed was set as 30km/h
 bikepo$ptt <- bikepo$milep*10000/(30/60)
