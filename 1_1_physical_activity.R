@@ -13,6 +13,7 @@ if (!require("drpa",character.only = TRUE)) {
 
 library(drpa)
 library(ithimr)
+library(writexl)
 
 all_mmets <- list.files(path = "data/regions_data", pattern = "*merged_Individual result.csv", full.names = TRUE) %>%
   setNames(., sub("\\.csv$", "", basename(.))) %>% 
