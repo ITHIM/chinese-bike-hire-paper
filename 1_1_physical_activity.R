@@ -10,8 +10,15 @@ if (!require("drpa",character.only = TRUE)) {
   print('Installing "drpa" package...')
   remotes::install_github("meta-analyses/drpa")
 }
-
 library(drpa)
+
+# Check if ithimr package (from latam_paper) is installed, if not then install it
+if (!require("ithimr",character.only = TRUE)) {
+  print('Installing ITHIMR package from the most latest developments in the latam_paper branch')
+  # Uncomment line below if install_github fails in Windows
+  # options(download.file.method = "wininet")
+  remotes::install_github("ITHIM/ITHIM-R@latam_paper")
+}
 library(ithimr)
 library(writexl)
 
@@ -87,7 +94,7 @@ for (i in 1:length(all_mmets)){
     filter(cause %in% DISEASE_INVENTORY$GBD_name & location_name == region)
   
   # Calcualte RR for PA
-  ind_pa <- ithimr::gen_pa_rr(mmets)
+  ind_pa <- ithimr::gen_pa_rr(mmets, conf_int = TRUE)
   
   # # Calculate RR for AP
   # ind_ap <- ithimr::gen_ap_rr(rr_pp)
@@ -96,7 +103,7 @@ for (i in 1:length(all_mmets)){
   # RR_PA_AP_calculations <- ithimr::combined_rr_ap_pa(ind_pa = ind_pa,ind_ap = ind_ap)
   
   # Calculate health burden for deaths and YLLs
-  health_burden_list <- ithimr::health_burden(ind_pa, combined_AP_PA = F)
+  health_burden_list <- ithimr::health_burden(ind_pa, conf_int = TRUE, combined_AP_PA = F)
   
   # Print plots of health burden - by age and gender groups
   for (type in names(health_burden_list)){
@@ -106,8 +113,8 @@ for (i in 1:length(all_mmets)){
     
     # Rename columns - remove unnecessary bits
     plot_cols <- sapply(names(burden_df),function(x)grepl('scen',x))
-    col_names <- str_replace_all(names(burden_df[plot_cols]), paste0(paste0("scen_", type, "_"), '|pa_ap_|ap_|pa_'), '')
-    names(burden_df)[3:15] <- col_names
+    col_names <- str_replace_all(names(burden_df[plot_cols]), paste0(paste0("scen_", type, "_"), '|pa_ap_|ap_|pa_|_lb|_ub'), '')
+    names(burden_df)[3:ncol(burden_df)] <- col_names
     
     # Change form
     burden_df <- pivot_longer(burden_df, cols = -c(sex, age_cat))
@@ -122,26 +129,25 @@ for (i in 1:length(all_mmets)){
     
     #write_csv(burden_df, paste0("./output/health-burden-", region, "-", type, "-df.csv"))
     
-    # Using ggplot, create a bar chart
+    # Using ggplot, create a box plot
     burden_graph <- ggplot(burden_df) +
-      aes(x = name, fill = age_cat, weight = value) +
-      geom_bar(position = "dodge") +
+      aes(x = name, y = value, fill = age_cat) +
+      geom_boxplot() +
       scale_fill_hue(direction = 1) +
+      coord_flip() +
+      theme_light() +
+      facet_wrap(vars(sex)) +
       labs(
         x = "Disease/cause",
         y = ifelse(type == "deaths", "# of deaths", "Years of Life Lost (YLLs)"),
         title = paste("Region - ", region, " - Health Burden - ", ifelse(type == "deaths", "Averted number of deaths", "Reduction in Years of Life Lost (YLLs)"))
-      ) +
-      coord_flip() +
-      theme_minimal() +
-      facet_wrap(vars(sex))
-    
+      )
+      
     print(burden_graph)
     
     ggsave(filename = paste0("./output/", type, "/health-burden-", region, "-", type, ".png"), burden_graph,
-          width = 10, height = 4, dpi = 300, units = "in", device='png'
+           width = 20, height = 10, dpi = 300, units = "in", device='png'
     )
-    
     
   }
 }
