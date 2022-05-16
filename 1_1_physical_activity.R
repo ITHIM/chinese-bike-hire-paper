@@ -16,7 +16,7 @@ library(drpa)
 if (!require("ithimr",character.only = TRUE)) {
   print('Installing ITHIMR package from the most latest developments in the latam_paper branch')
   # Uncomment line below if install_github fails in Windows
-  # options(download.file.method = "wininet")
+  # options(download.file.method = "wininet") ## seen at https://github.com/forestgeo/learn/issues/102#issuecomment-524264784
   remotes::install_github("ITHIM/ITHIM-R@latam_paper")
 }
 library(ithimr)
