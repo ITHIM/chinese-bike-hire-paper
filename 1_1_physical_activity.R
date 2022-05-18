@@ -27,7 +27,7 @@ all_mmets <- list.files(path = "data/regions_data", pattern = "*merged_Individua
   map(read_csv)
 
 # Read burden data
-INPUT_DISEASE_BURDEN <- readxl::read_excel("data/GBD_Province level_Final version.xlsx")
+INPUT_DISEASE_BURDEN <- readxl::read_excel("data/GBD_Province-include other final.xlsx")
 
 output_df <- list()
 
@@ -92,6 +92,12 @@ for (i in 1:length(all_mmets)){
                                                                                     ifelse(measure == "YLLs", "YLLs (Years of Life Lost)", 
                                                                                            measure)) %>% 
     filter(cause %in% DISEASE_INVENTORY$GBD_name & location_name == region)
+  
+  # Fix case
+  DISEASE_BURDEN[DISEASE_BURDEN$measure == "deaths",]$measure <- "Deaths"
+  
+  # Fix case
+  DISEASE_BURDEN$sex <- tolower(DISEASE_BURDEN$sex)
   
   # Calcualte RR for PA
   ind_pa <- ithimr::gen_pa_rr(mmets, conf_int = TRUE)
