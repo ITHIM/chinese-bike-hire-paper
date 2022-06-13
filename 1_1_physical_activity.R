@@ -54,9 +54,11 @@ for (i in 1:length(all_mmets)){
   
   # Demography
   # sex   age   population
-  DEMOGRAPHIC <<- mmets %>% dplyr::select(GENDER, agegroup, popsize) %>% rename(sex = GENDER, age_cat = agegroup, population = popsize)
+  DEMOGRAPHIC <<- mmets %>% 
+    dplyr::select(GENDER, agegroup, popsize) %>% 
+    rename(sex = GENDER, age_cat = agegroup, population = popsize) %>% 
+    group_by(age_cat, sex) %>% summarise(population = first(population))
   DEMOGRAPHIC$sex <- ifelse(DEMOGRAPHIC$sex == 1, "male", "female")
-  DEMOGRAPHIC <- distinct(DEMOGRAPHIC)
   DEMOGRAPHIC$dem_index <- 1:nrow(DEMOGRAPHIC)
   
   CHRONIC_DISEASE_SCALAR <- 1
@@ -88,9 +90,12 @@ for (i in 1:length(all_mmets)){
   # Also mutate YLLs to its full form
   # Only keep those causes that exist in the DISEASE_INVENTORY
   DISEASE_BURDEN <<- INPUT_DISEASE_BURDEN %>% rename(sex = sex_name, cause = cause_name, burden = val, age_cat = age_name, 
-                                               measure = measure_name) %>% mutate(measure = 
-                                                                                    ifelse(measure == "YLLs", "YLLs (Years of Life Lost)", 
-                                                                                           measure)) %>% 
+                                               measure = measure_name) %>% 
+    mutate(measure = ifelse(measure == "YLLs", "YLLs (Years of Life Lost)", measure)) %>% 
+    mutate(age_cat = case_when(str_detect(age_cat, "40-60") ~ "41-59", 
+                               str_detect(age_cat, "25-30") ~ "26-30",
+                               TRUE ~ age_cat)) %>% 
+    filter(age_cat %in% mmets$age_cat) %>% 
     filter(cause %in% DISEASE_INVENTORY$GBD_name & location_name == region)
   
   # Fix case
@@ -133,8 +138,6 @@ for (i in 1:length(all_mmets)){
     else
       output_df[[type]] <- rbind(output_df[[type]], burden_df)
     
-    #write_csv(burden_df, paste0("./output/health-burden-", region, "-", type, "-df.csv"))
-    
     # Using ggplot, create a box plot
     burden_graph <- ggplot(burden_df) +
       aes(x = name, y = value, fill = age_cat) +
@@ -150,10 +153,6 @@ for (i in 1:length(all_mmets)){
       )
       
     print(burden_graph)
-    
-    ggsave(filename = paste0("./output/", type, "/health-burden-", region, "-", type, ".png"), burden_graph,
-           width = 20, height = 10, dpi = 300, units = "in", device='png'
-    )
     
   }
 }
