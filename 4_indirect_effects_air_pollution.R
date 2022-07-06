@@ -1,371 +1,332 @@
 
+rm(list = ls())
+###################################
+##Calculate the indirect impact of air pollution on health burden###
 
-#################################################
-#####<4>Air pollution indirect impact##########
+library(openxlsx)
+library(dplyr)
+library(reshape2)
+library(tidyr)
 
-#Focus on PM2.5
+###1.imported and prepare data####
+##Ratio of car sources of PM2.5
+pm2.5r <- 0.2409
 
-####1.Proportion of air pollutants from motor vehicles####
-##the proportions were obtain from previous literature
-bikepo$pm2.5r <- 0.2409
+##Gas consumption (10,000 liters)
+oildata <- read.csv("../data/oildata.csv",stringsAsFactors = F)
+oildata$woil <- oildata$oil/365*7  #weekly
 
-##Gasoline consumption (ten thousand liters)
-oildata <- read.csv("./data/oildata.csv",stringsAsFactors = F)
-bikepo <- left_join(bikepo,oildata,by="area")
+##Fuel consumption per 100 km
+oilc <- 6.9
 
-#Converted from annual consumption to weekly
-bikepo$woil <- bikepo$oil/365*7
+#bicycle data
+biked <- read.csv("./data/bikedata210415.csv",stringsAsFactors = F)
+biked <- subset(biked,area != "nationwide")
 
-####2.Reduced gasoline consumption and changes in air concentration due to cycling####
-##(1)Reduced gasoline consumption by switching to cycling####
-#Unit: liters;
-#6.9 is the fuel consumption per 100 kilometers
-#100 is convert coefficient from "10 thousand kilometers" in milec "100 kilometers"
+proname <- unique(biked$area)
 
-bikepo$oilsave <- bikepo$milec*100*6.9 
+#air pollution data#
+podata <- read.csv("./data/pollutiondata/poldata.csv",stringsAsFactors = F)
+biked1 <- left_join(biked,podata,by=c("area","week"))
 
-##(2)PM2.5 concentration from motor vehicles####
-#Calculated based on the actual concentration, which is the concentration of shared bicycles
-bikepo$pm2.5vshared <- bikepo$pm2.5*bikepo$pm2.5r
 
-#When there is no shared bicycle, the PM2.5 concentration of motor vehicle source (v)
-bikepo$pm2.5vnoshared <- bikepo$pm2.5vshared*(bikepo$woil*10000/(bikepo$woil*10000-bikepo$oilsave))
+#population data
+pop <- read.xlsx("./data/GBD input/population/Population_National and Provinces V4_Hong all age.xlsx") %>%
+  subset(area != "National wide")
+popother <- subset(pop,area %in% c("QH","NX","XZ"))
+popother1 <- aggregate(popother["population"],
+                       by=list(age=popother$age,
+                               sex=popother$sex),
+                       sum)
+popother1$area <- "other"
+pop <- rbind(pop,popother1)
 
-#PM2.5 concentration without shared bicycles
-bikepo$pm2.5noshared <- bikepo$pm2.5-bikepo$pm2.5vshared+bikepo$pm2.5vnoshared
+nationpop <- read.xlsx("./data/GBD input/population/Population_National and Provinces V4_Hong all age.xlsx") %>%
+  subset(area == "National wide") %>%
+  subset(select=c("age","sex","population"))
+names(nationpop)[3] <- "totpop"
 
-####3.Calculation of long-term exposure concentration and RR value####
-##(1)Long-term exposure concentration calculation####
-pro <- unique(bikepo$area)
-airindirldata <- data.frame()
-for (i in 1:length(pro)) {
-  print(pro[i])
-  subd <- subset(bikepo,area==pro[i])
-  subd1 <- data.frame(area=pro[i],
-                      #Per capita exposure concentration
-                      lcPM2.5shared = mean(subd$pm2.5,na.rm = T),
-                      lcPM2.5noshared = mean(subd$pm2.5noshared,na.rm = T))
-  airindirldata <- rbind(airindirldata,subd1)
-}
+#GBD data
+agefile <- read.xlsx("./data/GBD input/Classification file-age.xlsx")
+GBD <- read.csv("./data/GBD input/IHME-GBD_2019_DATA_all.csv") %>%
+  subset(location_name=="China") %>%
+  subset(select=c("measure_name","location_name","sex_id","sex_name",
+                  "age_id","age_name","cause_id","cause_name",
+                  "val","upper","lower")) %>%
+  left_join(agefile,by="age_name") %>%
+  subset(cause_name %in% c("All causes","Cardiovascular diseases","Ischemic heart disease","Stroke",
+                           "Chronic respiratory diseases","Chronic obstructive pulmonary disease",
+                           "Asthma","Lower respiratory infections")) %>%
+  subset(measure_name %in% c("Deaths","YLLs (Years of Life Lost)"))
+GBD$measure_name <- ifelse(GBD$measure_name=="Deaths","Deaths","YLL")
 
-mean(airindirldata$lcPM2.5noshared-airindirldata$lcPM2.5shared)
 
-##(2)Calculate the RR value of the corresponding concentration####
+GBD1 <- aggregate(GBD["val"],
+                  by=list(measure_name=GBD$measure_name,
+                          sex=GBD$sex_name,
+                          age=GBD$age,
+                          cause_id=GBD$cause_id,
+                          cause_name=GBD$cause_name),
+                  sum)
+names(GBD1)
+GBD2 <- spread(data = GBD1,
+               key = "measure_name",
+               value = "val") %>%
+  left_join(nationpop,by=c("age","sex"))
+
+
+##function of Global Exposure Mortality Model (GEMM)
+#con,theta,alpha,miu,pai
 RRcal <- function(con,theta,alpha,miu,pai){
   rr <- exp((log(1+((con-2.4)/alpha)))/(1+exp((miu-(con-2.4))/pai))*theta)
   return(rr)
 }
 
-##A.Total RR####
-airindirldata$shared.totRR <- ifelse(airindirldata$lcPM2.5shared < 2.4,1,
-                                     RRcal(con=airindirldata$lcPM2.5shared,
-                                           theta = 0.143,alpha = 1.6,miu = 15.5,pai = 36.8))
-airindirldata$shared.totRRL <- ifelse(airindirldata$lcPM2.5shared < 2.4,1,
-                                     RRcal(con=airindirldata$lcPM2.5shared,
-                                           theta = 0.143-1.96*0.01807,alpha = 1.6,miu = 15.5,pai = 36.8))
-airindirldata$shared.totRRH <- ifelse(airindirldata$lcPM2.5shared < 2.4,1,
-                                      RRcal(con=airindirldata$lcPM2.5shared,
-                                            theta = 0.143+1.96*0.01807,alpha = 1.6,miu = 15.5,pai = 36.8))
-
-airindirldata$noshared.totRR <- ifelse(airindirldata$lcPM2.5noshared < 2.4,1,
-                                       RRcal(con=airindirldata$lcPM2.5noshared,
-                                             theta = 0.143,alpha = 1.6,miu = 15.5,pai = 36.8))
-airindirldata$noshared.totRRL <- ifelse(airindirldata$lcPM2.5noshared < 2.4,1,
-                                        RRcal(con=airindirldata$lcPM2.5noshared,
-                                              theta = 0.143-1.96*0.01807,alpha = 1.6,miu = 15.5,pai = 36.8))
-airindirldata$noshared.totRRH <- ifelse(airindirldata$lcPM2.5noshared < 2.4,1,
-                                        RRcal(con=airindirldata$lcPM2.5noshared,
-                                              theta = 0.143+1.96*0.01807,alpha = 1.6,miu = 15.5,pai = 36.8))
-##B.IHD-RR####
-airindirldata$shared.ihdRR <- ifelse(airindirldata$lcPM2.5shared < 2.4,1,
-                                     RRcal(con=airindirldata$lcPM2.5shared,
-                                           theta = 0.2969,alpha = 1.9,miu = 12,pai = 40.2))
-airindirldata$shared.ihdRRL <- ifelse(airindirldata$lcPM2.5shared < 2.4,1,
-                                      RRcal(con=airindirldata$lcPM2.5shared,
-                                            theta = 0.2969-1.96*0.01787,alpha = 1.9,miu = 12,pai = 40.2))
-airindirldata$shared.ihdRRH <- ifelse(airindirldata$lcPM2.5shared < 2.4,1,
-                                      RRcal(con=airindirldata$lcPM2.5shared,
-                                            theta = 0.2969+1.96*0.01787,alpha = 1.9,miu = 12,pai = 40.2))
-
-airindirldata$noshared.ihdRR <- ifelse(airindirldata$lcPM2.5noshared < 2.4,1,
-                                       RRcal(con=airindirldata$lcPM2.5noshared,
-                                             theta = 0.2969,alpha = 1.9,miu = 12,pai = 40.2))
-airindirldata$noshared.ihdRRL <- ifelse(airindirldata$lcPM2.5noshared < 2.4,1,
-                                        RRcal(con=airindirldata$lcPM2.5noshared,
-                                              theta = 0.2969-1.96*0.01787,alpha = 1.9,miu = 12,pai = 40.2))
-airindirldata$noshared.ihdRRH <- ifelse(airindirldata$lcPM2.5noshared < 2.4,1,
-                                        RRcal(con=airindirldata$lcPM2.5noshared,
-                                              theta = 0.2969+1.96*0.01787,alpha = 1.9,miu = 12,pai = 40.2))
-
-##C.Stroke-RR####
-airindirldata$shared.stroRR <- ifelse(airindirldata$lcPM2.5shared < 2.4,1,
-                                      RRcal(con=airindirldata$lcPM2.5shared,
-                                            theta = 0.2720,alpha = 6.2,miu = 16.7,pai = 23.7))
-airindirldata$shared.stroRRL <- ifelse(airindirldata$lcPM2.5shared < 2.4,1,
-                                       RRcal(con=airindirldata$lcPM2.5shared,
-                                             theta = 0.2720-1.96*0.07697,alpha = 6.2,miu = 16.7,pai = 23.7))
-airindirldata$shared.stroRRH <- ifelse(airindirldata$lcPM2.5shared < 2.4,1,
-                                       RRcal(con=airindirldata$lcPM2.5shared,
-                                             theta = 0.2720+1.96*0.07697,alpha = 6.2,miu = 16.7,pai = 23.7))
-
-airindirldata$noshared.stroRR <- ifelse(airindirldata$lcPM2.5noshared < 2.4,1,
-                                        RRcal(con=airindirldata$lcPM2.5noshared,
-                                              theta = 0.2720,alpha = 6.2,miu = 16.7,pai = 23.7))
-airindirldata$noshared.stroRRL <- ifelse(airindirldata$lcPM2.5noshared < 2.4,1,
-                                         RRcal(con=airindirldata$lcPM2.5noshared,
-                                               theta = 0.2720-1.96*0.07697,alpha = 6.2,miu = 16.7,pai = 23.7))
-airindirldata$noshared.stroRRH <- ifelse(airindirldata$lcPM2.5noshared < 2.4,1,
-                                         RRcal(con=airindirldata$lcPM2.5noshared,
-                                               theta = 0.2720+1.96*0.07697,alpha = 6.2,miu = 16.7,pai = 23.7))
-##D.COPD-RR####
-airindirldata$shared.copdRR <- ifelse(airindirldata$lcPM2.5shared < 2.4,1,
-                                      RRcal(con=airindirldata$lcPM2.5shared,
-                                            theta = 0.2510,alpha = 6.5,miu = 2.5,pai = 32))
-airindirldata$shared.copdRRL <- ifelse(airindirldata$lcPM2.5shared < 2.4,1,
-                                       RRcal(con=airindirldata$lcPM2.5shared,
-                                             theta = 0.2510-1.96*0.06762,alpha = 6.5,miu = 2.5,pai = 32))
-airindirldata$shared.copdRRH <- ifelse(airindirldata$lcPM2.5shared < 2.4,1,
-                                       RRcal(con=airindirldata$lcPM2.5shared,
-                                             theta = 0.2510+1.96*0.06762,alpha = 6.5,miu = 2.5,pai = 32))
-
-airindirldata$noshared.copdRR <- ifelse(airindirldata$lcPM2.5noshared < 2.4,1,
-                                        RRcal(con=airindirldata$lcPM2.5noshared,
-                                              theta = 0.2510,alpha = 6.5,miu = 2.5,pai = 32))
-airindirldata$noshared.copdRRL <- ifelse(airindirldata$lcPM2.5noshared < 2.4,1,
-                                         RRcal(con=airindirldata$lcPM2.5noshared,
-                                               theta = 0.2510-1.96*0.06762,alpha = 6.5,miu = 2.5,pai = 32))
-airindirldata$noshared.copdRRH <- ifelse(airindirldata$lcPM2.5noshared < 2.4,1,
-                                         RRcal(con=airindirldata$lcPM2.5noshared,
-                                               theta = 0.2510+1.96*0.06762,alpha = 6.5,miu = 2.5,pai = 32))
-
-
-####The following process is consistent with direct pollution exposure, 
-#except that the user was transferred to the population
-
-
-####4.Death and YLL income calculation####
-#匹配人口数、死亡率和YLL数据
-airindirldata <- left_join(airindirldata,disdierate,by="area") %>%
-  left_join(ylldata,by="area")
-
-####(1)归因死亡数计算####
-names(airindirldata)
-attach(airindirldata)
-###A.总死亡归因计算####
-##无共享单车下，空气污染导致的人群死亡数
-#人口数*每周死亡率*109周*(RR-1)
-airindirldata$dienoshared <- pop*10*wtotalm*(noshared.totRR-1)*109
-airindirldata$dienosharedL <- pop*10*wtotalm*(noshared.totRRL-1)*109
-airindirldata$dienosharedH <- pop*10*wtotalm*(noshared.totRRH-1)*109
-
-##有共享单车
-airindirldata$dieshared <- pop*10*wtotalm*(shared.totRR-1)*109
-airindirldata$diesharedL <- pop*10*wtotalm*(shared.totRRL-1)*109
-airindirldata$diesharedH <- pop*10*wtotalm*(shared.totRRH-1)*109
 
-###B.CVD归因计算####
-##无共享单车
-airindirldata$diecvdnoshared <- pop*10*wcvdm*(noshared.stroRR-1)*109
-airindirldata$diecvdnosharedL <- pop*10*wcvdm*(noshared.stroRRL-1)*109
-airindirldata$diecvdnosharedH <- pop*10*wcvdm*(noshared.stroRRH-1)*109
-
-##有共享单车
-airindirldata$diecvdshared <- pop*10*wcvdm*(shared.stroRR-1)*109
-airindirldata$diecvdsharedL <- pop*10*wcvdm*(shared.stroRRL-1)*109
-airindirldata$diecvdsharedH <- pop*10*wcvdm*(shared.stroRRH-1)*109
-
-###C.中风归因计算####
-##无共享单车
-airindirldata$diestronoshared <- pop*10*wstrorm*(noshared.stroRR-1)*109
-airindirldata$diestronosharedL <- pop*10*wstrorm*(noshared.stroRRL-1)*109
-airindirldata$diestronosharedH <- pop*10*wstrorm*(noshared.stroRRH-1)*109
-
-##有共享单车
-airindirldata$diestroshared <- pop*10*wstrorm*(shared.stroRR-1)*109
-airindirldata$diestrosharedL <- pop*10*wstrorm*(shared.stroRRL-1)*109
-airindirldata$diestrosharedH <- pop*10*wstrorm*(shared.stroRRH-1)*109
-
-
-###D.IHD归因计算####
-##无共享单车
-airindirldata$dieihdnoshared <- pop*10*wihdrm*(noshared.ihdRR-1)*109
-airindirldata$dieihdnosharedL <- pop*10*wihdrm*(noshared.ihdRRL-1)*109
-airindirldata$dieihdnosharedH <- pop*10*wihdrm*(noshared.ihdRRH-1)*109
-
-##有共享单车
-airindirldata$dieihdshared <- pop*10*wihdrm*(shared.ihdRR-1)*109
-airindirldata$dieihdsharedL <- pop*10*wihdrm*(shared.ihdRRL-1)*109
-airindirldata$dieihdsharedH <- pop*10*wihdrm*(shared.ihdRRH-1)*109
-
-###E.RESP归因计算####
-##无共享单车
-airindirldata$dierespnoshared <- pop*10*wrespm*(noshared.copdRR-1)*109
-airindirldata$dierespnosharedL <- pop*10*wrespm*(noshared.copdRRL-1)*109
-airindirldata$dierespnosharedH <- pop*10*wrespm*(noshared.copdRRH-1)*109
-
-##有共享单车
-airindirldata$dierespshared <- pop*10*wrespm*(shared.copdRR-1)*109
-airindirldata$dierespsharedL <- pop*10*wrespm*(shared.copdRRL-1)*109
-airindirldata$dierespsharedH <- pop*10*wrespm*(shared.copdRRH-1)*109
-
-###F.COPD归因计算####
-##无共享单车
-airindirldata$diecopdnoshared <- pop*10*wcopdm*(noshared.copdRR-1)*109
-airindirldata$diecopdnosharedL <- pop*10*wcopdm*(noshared.copdRRL-1)*109
-airindirldata$diecopdnosharedH <- pop*10*wcopdm*(noshared.copdRRH-1)*109
-
-##有共享单车
-airindirldata$diecopdshared <- pop*10*wcopdm*(shared.copdRR-1)*109
-airindirldata$diecopdsharedL <- pop*10*wcopdm*(shared.copdRRL-1)*109
-airindirldata$diecopdsharedH <- pop*10*wcopdm*(shared.copdRRH-1)*109
-
-
-###G.哮喘归因计算####
-##无共享单车
-airindirldata$dieashnoshared <- pop*10*washm*(noshared.copdRR-1)*109
-airindirldata$dieashnosharedL <- pop*10*washm*(noshared.copdRRL-1)*109
-airindirldata$dieashnosharedH <- pop*10*washm*(noshared.copdRRH-1)*109
-
-##有共享单车
-airindirldata$dieashshared <- pop*10*washm*(shared.copdRR-1)*109
-airindirldata$dieashsharedL <- pop*10*washm*(shared.copdRRL-1)*109
-airindirldata$dieashsharedH <- pop*10*washm*(shared.copdRRH-1)*109
-
-detach(airindirldata)
-
-####(2)收益死亡数和YLL计算####
-###A.各类结局计算####
-attach(airindirldata)
-
-#总死亡
-airindirldata$beniapindirtot <- airindirldata$dienoshared-airindirldata$dieshared
-airindirldata$beniapindirtotyll <- airindirldata$beniapindirtot*totyll/(wtotalm/7*365*100)
-
-#CVD
-airindirldata$beniapindircvd <- airindirldata$diecvdnoshared-airindirldata$diecvdshared
-
-airindirldata$beniapindircvdyll <- airindirldata$beniapindircvd*cvdyll/(wcvdm/7*365*100)
-
-#IHD
-airindirldata$beniapindirihd <- airindirldata$dieihdnoshared-airindirldata$dieihdshared
-
-airindirldata$beniapindirihdyll <- airindirldata$beniapindirihd*ihdyll/(wihdrm/7*365*100)
-
-#stroke
-airindirldata$beniapindirstro <- airindirldata$diestronoshared-airindirldata$diestroshared
-
-airindirldata$beniapindirstroyll <- airindirldata$beniapindirstro*storyll/(wstrorm/7*365*100)
-
-#RESP
-airindirldata$beniapindirresp <- airindirldata$dierespnoshared-airindirldata$dierespshared
-
-airindirldata$beniapindirrespyll <- airindirldata$beniapindirresp*respyll/(wrespm/7*365*100)
-
-#COPD
-airindirldata$beniapindircopd <- airindirldata$diecopdnoshared-airindirldata$diecopdshared
-
-airindirldata$beniapindircopdyll <- airindirldata$beniapindircopd*copdyll/(wcopdm/7*365*100)
-
-#哮喘
-airindirldata$beniapindirash <- airindirldata$dieashnoshared-airindirldata$dieashshared
-
-airindirldata$beniapindirashyll <- airindirldata$beniapindirash*astyll/(washm/7*365*100)
-
-detach(airindirldata)
-
-
-
-####5.Calculation of morbidity and YLD benefits####
-#建立发病和YLD的数据库
-#与死亡使用相同的RR
-names(airindirldata)
-airindirldis <- airindirldata[,c(1:27)]
-
-###匹配死亡率和YLL数据###
-airindirldis <- left_join(airindirldis,dismorrate,by="area") %>%
-  left_join(ylddata,by="area")
-names(airindirldis)
-
-####(1)归因发病数和YLD计算####
-attach(airindirldis)
-
-###A.CVD归因计算####
-airindirldis$discvdnoshared <- pop*10*wcvdi*(noshared.stroRR-1)*109
-##有共享单车
-airindirldis$discvdshared <- pop*10*wcvdi*(shared.stroRR-1)*109
-
-###B.中风归因计算####
-##无共享单车
-airindirldis$disstronoshared <- pop*10*wstrori*(noshared.stroRR-1)*109
-
-##有共享单车
-airindirldis$disstroshared <- pop*10*wstrori*(shared.stroRR-1)*109
-
-###C.IHD归因计算####
-##无共享单车
-airindirldis$disihdnoshared <- pop*10*wihdri*(noshared.ihdRR-1)*109
-
-##有共享单车
-airindirldis$disihdshared <- pop*10*wihdri*(shared.ihdRR-1)*109
-
-###D.RESP归因计算####
-##无共享单车
-airindirldis$disrespnoshared <- pop*10*wrespi*(noshared.copdRR-1)*109
-
-##有共享单车
-airindirldis$disrespshared <- pop*10*wrespi*(shared.copdRR-1)*109
-
-###E.COPD归因计算####
-##无共享单车
-airindirldis$discopdnoshared <- pop*10*wcopdi*(noshared.copdRR-1)*109
-
-##有共享单车
-airindirldis$discopdshared <- pop*10*wcopdi*(shared.copdRR-1)*109
-
-
-###F.哮喘归因计算####
-##无共享单车
-airindirldis$disashnoshared <- pop*10*washi*(noshared.copdRR-1)*109
-
-##有共享单车
-airindirldis$disashshared <- pop*10*washi*(shared.copdRR-1)*109
-
-detach(airindirldis)
-
-
-####(2)收益发病数和YLD计算####
-###A.各类结局计算####
-attach(airindirldis)
-
-#CVD
-airindirldis$beniapindircvd <- airindirldis$discvdnoshared-airindirldis$discvdshared
-
-airindirldis$beniapindircvdyld <- airindirldis$beniapindircvd*cvdyld/(wcvdi/7*365*100)
-
-#IHD
-airindirldis$beniapindirihd <- airindirldis$disihdnoshared-airindirldis$disihdshared
-
-airindirldis$beniapindirihdyld <- airindirldis$beniapindirihd*ihdyld/(wihdri/7*365*100)
-
-#stroke
-airindirldis$beniapindirstro <- airindirldis$disstronoshared-airindirldis$disstroshared
-
-airindirldis$beniapindirstroyld <- airindirldis$beniapindirstro*storyld/(wstrori/7*365*100)
-
-#RESP
-airindirldis$beniapindirresp <- airindirldis$disrespnoshared-airindirldis$disrespshared
-
-airindirldis$beniapindirrespyld <- airindirldis$beniapindirresp*respyld/(wrespi/7*365*100)
-
-#COPD
-airindirldis$beniapindircopd <- airindirldis$discopdnoshared-airindirldis$discopdshared
-
-airindirldis$beniapindircopdyld <- airindirldis$beniapindircopd*copdyld/(wcopdi/7*365*100)
-
-#哮喘
-airindirldis$beniapindirash <- airindirldis$disashnoshared-airindirldis$disashshared
-
-airindirldis$beniapindirashyld <- airindirldis$beniapindirash*astyld/(washi/7*365*100)
-
-detach(airindirldis)
-
+###2.loop for each province####
+prodata <- data.frame()
+for (i in 1:length(proname)) {
+  print(proname[i])
+  bikepo <- subset(biked1,area==proname[i]) %>%
+    left_join(oildata,by="area")
+  
+  ###(1)Basic assumptions####
+  bikepo <- mutate(bikepo,
+                   milbelow1=wts*onemilr0.5*0.25+wts*onemilr1*0.75,
+                   milover3=wts*onemilr5.*6+wts*onemilr5*4.75+wts*onemilr4.5*4.25+wts*onemilr4*3.75+wts*onemilr3.5*3.25,
+                   milbetween13=mil-milbelow1-milover3,
+                   
+                   milew=milbelow1*0.9094,
+                   mileb=milbelow1*0.0906+milbetween13*0.3137,
+                   milec=                 milbetween13*0.2483+milover3*0.3619,
+                   milep=                 milbetween13*0.4380+milover3*0.6381
+  )
+  
+  ###(2)Cycling reduces gasoline consumption and changes in air concentration####
+  bikepo$oilsave <- bikepo$milec*100*oilc
+  
+  #PM2.5 from motor vehicles with sharedbike
+  bikepo$pm2.5vshared <- bikepo$pm2.5*pm2.5r
+  
+  #PM2.5 from motor vehicles without sharedbike
+  bikepo$pm2.5vnoshared <- bikepo$pm2.5vshared*(bikepo$woil*10000/(bikepo$woil*10000-bikepo$oilsave))
+  
+  #PM2.5 concentration without bike sharing
+  bikepo$pm2.5noshared <- bikepo$pm2.5-bikepo$pm2.5vshared+bikepo$pm2.5vnoshared
+  
+  #Long-term per capita exposure concentration
+  lcPM2.5shared = mean(bikepo$pm2.5,na.rm = T)
+  lcPM2.5noshared = mean(bikepo$pm2.5noshared,na.rm = T)
+  
+  longex <- data.frame(con=c(lcPM2.5shared,lcPM2.5noshared),
+                       change=c("noshared","shared"))
+  ###(3)Generate the RR value####
+  #Calculated parameters
+  calpar <- data.frame(cause_name=c("All causes","Cardiovascular diseases","Ischemic heart disease",
+                                    "Stroke","Lower respiratory infections",
+                                    "Chronic respiratory diseases","Asthma",
+                                    "Chronic obstructive pulmonary disease"),
+                       theta1=c(0.143,0.2720,0.2969,0.2720,0.2510,0.2510,0.2510,0.2510),
+                       theta1se=c(0.01807,0.07697,0.01787,0.07697,0.06762,0.06762,0.06762,0.06762),
+                       alpha1=c(1.6,6.2,1.9,6.2,6.5,6.5,6.5,6.5),
+                       miu1=c(15.5,16.7,12,16.7,2.5,2.5,2.5,2.5),
+                       pai1=c(36.8,23.7,40.2,23.7,32,32,32,32))
+  
+  RRdata <- data.frame()
+  for (p in 1:nrow(calpar)) {
+    subpar <- calpar[p,]
+    for (q in 1:nrow(longex)) {
+      RR <- ifelse(longex$con[q]< 2.4,1,
+                   RRcal(con=longex$con[q],
+                         theta = subpar$theta1[1],alpha = subpar$alpha1[1],
+                         miu = subpar$miu1[1],pai = subpar$pai1[1]))
+      RRL <- ifelse(longex$con[q]< 2.4,1,
+                    RRcal(con=longex$con[q],
+                          theta = subpar$theta1[1]-1.96*subpar$theta1se[1],alpha = subpar$alpha1[1],
+                          miu = subpar$miu1[1],pai = subpar$pai1[1]))
+      
+      RRH <- ifelse(longex$con[q]< 2.4,1,
+                    RRcal(con=longex$con[q],
+                          theta = subpar$theta1[1]+1.96*subpar$theta1se[1],alpha = subpar$alpha1[1],
+                          miu = subpar$miu1[1],pai = subpar$pai1[1]))
+      
+      RRd <- data.frame(area=proname[i],
+                        cause_name=subpar$cause_name[1],
+                        change=longex$change[q],
+                        RR=RR,RRL=RRL,RRH=RRH)
+      RRdata <- rbind(RRdata,RRd)
+    }
+  }
+  
+  poptype <- data.frame(area=rep(proname[i],14),
+                        age=c("0-15","15-25","25-30","31-35","36-40","40-60",">60",
+                              "0-15","15-25","25-30","31-35","36-40","40-60",">60"),
+                        sex=c("Male","Male","Male","Male","Male","Male","Male",
+                              "Female","Female","Female","Female","Female","Female","Female"))
+  poptype1 <- left_join(poptype,pop,by=c("area","sex","age"))
+  for (j in 1:nrow(poptype1)) {
+    print(paste0(proname[i],"-",poptype1$sex[j],":",poptype1$age[j]))
+    GBDpro <- subset(GBD2,sex==poptype1$sex[j]&age==poptype1$age[j])
+    GBDpro1 <- left_join(RRdata,GBDpro,by=c("cause_name")) %>%
+      left_join(pop,by=c("area","sex","age"))
+    
+    ###death rate and YLL per death
+    GBDpro1$deathr <- GBDpro1$Deaths/GBDpro1$totpop/365*7
+    GBDpro1$YLL1death <- GBDpro1$YLL/GBDpro1$Deaths
+    GBDpro1$YLL1death[is.na(GBDpro1$YLL1death)] <- 0
+    
+    prodata <- rbind(prodata,GBDpro1)
+  }
+}
+
+
+###3.calculation and aggregation####
+##calculation
+#attributable death
+prodata$ad <- prodata$population*prodata$deathr*(prodata$RR-1)*109
+prodata$adse <- ((prodata$population*prodata$deathr*(prodata$RRH-1)*109)-
+                   (prodata$population*prodata$deathr*(prodata$RRL-1)*109))/(1.96*2)
+
+#attributable YLL
+prodata$aY <- prodata$ad*prodata$YLL1death
+prodata$aYse <- ((prodata$population*prodata$deathr*(prodata$RRH-1)*109)*prodata$YLL1death-
+                   (prodata$population*prodata$deathr*(prodata$RRL-1)*109)*prodata$YLL1death)/(1.96*2)
+
+##aggregate to mode change
+#Standard Deviation Calculation Function
+calse <- function(x){
+  se <- (sum(x^2))^0.5
+  return(se)
+}
+
+prodata1 <- aggregate(prodata[c("ad","aY")],
+                      by=list(cause_id=prodata$cause_id,
+                              cause_name=prodata$cause_name,
+                              change=prodata$change,
+                              area=prodata$area,
+                              sex=prodata$sex,
+                              age=prodata$age),
+                      sum) %>%
+  left_join(aggregate(prodata[c("adse","aYse")],
+                      by=list(cause_id=prodata$cause_id,
+                              cause_name=prodata$cause_name,
+                              change=prodata$change,
+                              area=prodata$area,
+                              sex=prodata$sex,
+                              age=prodata$age),
+                      calse),
+            by=c("cause_id","cause_name","change",
+                 "area","sex","age"))
+
+prodata2 <- gather(prodata1,
+                   key = "index",
+                   value = "num",
+                   ad:aYse) %>%
+  spread(key = "change",
+         value = 'num')
+
+##aggregate to region and subgroup
+names(prodata2)
+prodata2.1 <- subset(prodata2,index %in% c("ad","aY"))
+prodata2.2 <- subset(prodata2,index %in% c("adse","aYse"))
+prodata2.2$index <- ifelse(prodata2.2$index=="adse","ad","aY")
+names(prodata2.2)[7:8] <- c("noshared.se","shared.se")
+
+####(1)national####
+nationresult1.1 <- aggregate(prodata2.1[c("noshared","shared")],
+                             by=list(cause_id=prodata2.1$cause_id,
+                                     cause_name=prodata2.1$cause_name,
+                                     sex=prodata2.1$sex,
+                                     age=prodata2.1$age,
+                                     index=prodata2.1$index),
+                             sum) %>%
+  left_join(aggregate(prodata2.2[c("noshared.se","shared.se")],
+                      by=list(cause_id=prodata2.2$cause_id,
+                              cause_name=prodata2.2$cause_name,
+                              sex=prodata2.2$sex,
+                              age=prodata2.2$age,
+                              index=prodata2.2$index),
+                      calse),
+            by=c("cause_id","cause_name","sex","age","index"))
+
+nationresult1.1$nosharedL <- nationresult1.1$noshared-1.96*nationresult1.1$noshared.se
+nationresult1.1$nosharedH <- nationresult1.1$noshared+1.96*nationresult1.1$noshared.se
+
+nationresult1.1$sharedL <- nationresult1.1$shared-1.96*nationresult1.1$shared.se
+nationresult1.1$sharedH <- nationresult1.1$shared+1.96*nationresult1.1$shared.se
+
+nationresult1.1$ben <- nationresult1.1$shared-nationresult1.1$noshared
+nationresult1.1$benL <- nationresult1.1$sharedL-nationresult1.1$nosharedL
+nationresult1.1$benH <- nationresult1.1$sharedH-nationresult1.1$nosharedH
+
+
+nationresult1.2 <- aggregate(prodata2.1[c("noshared","shared")],
+                             by=list(cause_id=prodata2.1$cause_id,
+                                     cause_name=prodata2.1$cause_name,
+                                     index=prodata2.1$index),
+                             sum) %>%
+  left_join(aggregate(prodata2.2[c("noshared.se","shared.se")],
+                      by=list(cause_id=prodata2.2$cause_id,
+                              cause_name=prodata2.2$cause_name,
+                              index=prodata2.2$index),
+                      calse),
+            by=c("cause_id","cause_name","index"))
+
+nationresult1.2$age <- "all"
+nationresult1.2$sex <- "all"
+
+nationresult1.2$nosharedL <- nationresult1.2$noshared-1.96*nationresult1.2$noshared.se
+nationresult1.2$nosharedH <- nationresult1.2$noshared+1.96*nationresult1.2$noshared.se
+
+nationresult1.2$sharedL <- nationresult1.2$shared-1.96*nationresult1.2$shared.se
+nationresult1.2$sharedH <- nationresult1.2$shared+1.96*nationresult1.2$shared.se
+
+nationresult1.2$ben <- nationresult1.2$shared-nationresult1.2$noshared
+nationresult1.2$benL <- nationresult1.2$sharedL-nationresult1.2$nosharedL
+nationresult1.2$benH <- nationresult1.2$sharedH-nationresult1.2$nosharedH
+
+
+#rbind
+nationresult <- rbind(subset(nationresult1.1,select = c("cause_id","cause_name","sex","age","index",
+                                                        "ben","benL","benH")),
+                      subset(nationresult1.2,select = c("cause_id","cause_name","sex","age","index",
+                                                        "ben","benL","benH")))
+nationresult$ben <- round(nationresult$ben,2)
+nationresult$benL <- round(nationresult$benL,2)
+nationresult$benH <- round(nationresult$benH,2)
+
+write.csv(nationresult,"./output/indirectAP/nationalben-indirect.csv",row.names = F)
+
+
+####(2)provincial####
+proresult <- aggregate(prodata2.1[c("noshared","shared")],
+                       by=list(cause_id=prodata2.1$cause_id,
+                               cause_name=prodata2.1$cause_name,
+                               area=prodata2.1$area,
+                               index=prodata2.1$index),
+                       sum) %>%
+  left_join(aggregate(prodata2.2[c("noshared.se","shared.se")],
+                      by=list(cause_id=prodata2.2$cause_id,
+                              cause_name=prodata2.2$cause_name,
+                              area=prodata2.1$area,
+                              index=prodata2.2$index),
+                      calse),
+            by=c("cause_id","cause_name","area","index"))
+
+proresult$nosharedL <- proresult$noshared-1.96*proresult$noshared.se
+proresult$nosharedH <- proresult$noshared+1.96*proresult$noshared.se
+
+proresult$sharedL <- proresult$shared-1.96*proresult$shared.se
+proresult$sharedH <- proresult$shared+1.96*proresult$shared.se
+
+proresult$ben <- proresult$shared-proresult$noshared
+proresult$benL <- proresult$sharedL-proresult$nosharedL
+proresult$benH <- proresult$sharedH-proresult$nosharedH
+
+proresult <- rbind(subset(proresult,select = c("cause_id","cause_name","index",
+                                               "ben","benL","benH")))
+proresult$ben <- round(proresult$ben,2)
+proresult$benL <- round(proresult$benL,2)
+proresult$benH <- round(proresult$benH,2)
+
+write.csv(proresult,"./output/indirectAP/provincialben-indirect.csv",row.names = F)
