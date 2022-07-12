@@ -95,6 +95,7 @@ for (i in 1:length(all_mmets)){
     mutate(age_cat = case_when(str_detect(age_cat, "40-60") ~ "41-59", 
                                str_detect(age_cat, "25-30") ~ "26-30",
                                TRUE ~ age_cat)) %>% 
+    mutate(sex = ifelse(sex == 1, "male", "female"))%>%
     filter(age_cat %in% mmets$age_cat) %>% 
     filter(cause %in% DISEASE_INVENTORY$GBD_name & location_name == region)
   
