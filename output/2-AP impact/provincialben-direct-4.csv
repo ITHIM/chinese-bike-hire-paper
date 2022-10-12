@@ -1,0 +1,465 @@
+"cause_id","cause_name","index","area","ben","benL","benH"
+294,"All causes","ad","AH",1.47,1.47,1.47
+515,"Asthma","ad","AH",0,0,0
+491,"Cardiovascular diseases","ad","AH",0.47,0.47,0.47
+509,"Chronic obstructive pulmonary disease","ad","AH",0.02,0.02,0.02
+508,"Chronic respiratory diseases","ad","AH",0.03,0.03,0.03
+493,"Ischemic heart disease","ad","AH",0.32,0.32,0.32
+322,"Lower respiratory infections","ad","AH",0.02,0.02,0.02
+494,"Stroke","ad","AH",0.2,0.2,0.2
+294,"All causes","ad","BJ",2.58,2.57,2.58
+515,"Asthma","ad","BJ",0.01,0.01,0.01
+491,"Cardiovascular diseases","ad","BJ",0.85,0.85,0.85
+509,"Chronic obstructive pulmonary disease","ad","BJ",0.04,0.04,0.04
+508,"Chronic respiratory diseases","ad","BJ",0.05,0.05,0.05
+493,"Ischemic heart disease","ad","BJ",0.56,0.56,0.56
+322,"Lower respiratory infections","ad","BJ",0.03,0.03,0.03
+494,"Stroke","ad","BJ",0.36,0.36,0.37
+294,"All causes","ad","CQ",0.82,0.81,0.82
+515,"Asthma","ad","CQ",0,0,0
+491,"Cardiovascular diseases","ad","CQ",0.24,0.24,0.24
+509,"Chronic obstructive pulmonary disease","ad","CQ",0.01,0.01,0.01
+508,"Chronic respiratory diseases","ad","CQ",0.02,0.02,0.02
+493,"Ischemic heart disease","ad","CQ",0.18,0.17,0.18
+322,"Lower respiratory infections","ad","CQ",0.01,0.01,0.01
+494,"Stroke","ad","CQ",0.1,0.1,0.1
+294,"All causes","ad","FJ",1.1,1.09,1.1
+515,"Asthma","ad","FJ",0,0,0
+491,"Cardiovascular diseases","ad","FJ",0.26,0.26,0.26
+509,"Chronic obstructive pulmonary disease","ad","FJ",0.01,0.01,0.01
+508,"Chronic respiratory diseases","ad","FJ",0.02,0.02,0.02
+493,"Ischemic heart disease","ad","FJ",0.23,0.23,0.23
+322,"Lower respiratory infections","ad","FJ",0.01,0.01,0.01
+494,"Stroke","ad","FJ",0.11,0.11,0.11
+294,"All causes","ad","GD",4.18,4.18,4.19
+515,"Asthma","ad","GD",0.01,0.01,0.01
+491,"Cardiovascular diseases","ad","GD",1.09,1.09,1.09
+509,"Chronic obstructive pulmonary disease","ad","GD",0.06,0.06,0.06
+508,"Chronic respiratory diseases","ad","GD",0.08,0.08,0.08
+493,"Ischemic heart disease","ad","GD",0.88,0.88,0.88
+322,"Lower respiratory infections","ad","GD",0.05,0.05,0.05
+494,"Stroke","ad","GD",0.47,0.47,0.47
+294,"All causes","ad","GS",0.42,0.42,0.42
+515,"Asthma","ad","GS",0,0,0
+491,"Cardiovascular diseases","ad","GS",0.12,0.12,0.12
+509,"Chronic obstructive pulmonary disease","ad","GS",0.01,0.01,0.01
+508,"Chronic respiratory diseases","ad","GS",0.01,0.01,0.01
+493,"Ischemic heart disease","ad","GS",0.09,0.09,0.09
+322,"Lower respiratory infections","ad","GS",0,0,0
+494,"Stroke","ad","GS",0.05,0.05,0.05
+294,"All causes","ad","GX",0.6,0.6,0.61
+515,"Asthma","ad","GX",0,0,0
+491,"Cardiovascular diseases","ad","GX",0.17,0.17,0.17
+509,"Chronic obstructive pulmonary disease","ad","GX",0.01,0.01,0.01
+508,"Chronic respiratory diseases","ad","GX",0.01,0.01,0.01
+493,"Ischemic heart disease","ad","GX",0.13,0.13,0.13
+322,"Lower respiratory infections","ad","GX",0.01,0.01,0.01
+494,"Stroke","ad","GX",0.07,0.07,0.07
+294,"All causes","ad","GZ",0.35,0.35,0.35
+515,"Asthma","ad","GZ",0,0,0
+491,"Cardiovascular diseases","ad","GZ",0.09,0.09,0.09
+509,"Chronic obstructive pulmonary disease","ad","GZ",0,0,0
+508,"Chronic respiratory diseases","ad","GZ",0.01,0.01,0.01
+493,"Ischemic heart disease","ad","GZ",0.07,0.07,0.07
+322,"Lower respiratory infections","ad","GZ",0,0,0
+494,"Stroke","ad","GZ",0.04,0.04,0.04
+294,"All causes","ad","HaiN",0.13,0.13,0.13
+515,"Asthma","ad","HaiN",0,0,0
+491,"Cardiovascular diseases","ad","HaiN",0.03,0.03,0.03
+509,"Chronic obstructive pulmonary disease","ad","HaiN",0,0,0
+508,"Chronic respiratory diseases","ad","HaiN",0,0,0
+493,"Ischemic heart disease","ad","HaiN",0.03,0.03,0.03
+322,"Lower respiratory infections","ad","HaiN",0,0,0
+494,"Stroke","ad","HaiN",0.01,0.01,0.01
+294,"All causes","ad","HeB",2.49,2.49,2.5
+515,"Asthma","ad","HeB",0.01,0.01,0.01
+491,"Cardiovascular diseases","ad","HeB",0.83,0.83,0.83
+509,"Chronic obstructive pulmonary disease","ad","HeB",0.04,0.04,0.04
+508,"Chronic respiratory diseases","ad","HeB",0.05,0.05,0.05
+493,"Ischemic heart disease","ad","HeB",0.55,0.55,0.55
+322,"Lower respiratory infections","ad","HeB",0.03,0.03,0.03
+494,"Stroke","ad","HeB",0.36,0.35,0.36
+294,"All causes","ad","HeN",2.16,2.16,2.17
+515,"Asthma","ad","HeN",0.01,0.01,0.01
+491,"Cardiovascular diseases","ad","HeN",0.73,0.73,0.74
+509,"Chronic obstructive pulmonary disease","ad","HeN",0.03,0.03,0.03
+508,"Chronic respiratory diseases","ad","HeN",0.05,0.05,0.05
+493,"Ischemic heart disease","ad","HeN",0.48,0.48,0.48
+322,"Lower respiratory infections","ad","HeN",0.03,0.03,0.03
+494,"Stroke","ad","HeN",0.31,0.31,0.32
+294,"All causes","ad","HLJ",0.67,0.67,0.67
+515,"Asthma","ad","HLJ",0,0,0
+491,"Cardiovascular diseases","ad","HLJ",0.18,0.18,0.18
+509,"Chronic obstructive pulmonary disease","ad","HLJ",0.01,0.01,0.01
+508,"Chronic respiratory diseases","ad","HLJ",0.01,0.01,0.01
+493,"Ischemic heart disease","ad","HLJ",0.14,0.14,0.14
+322,"Lower respiratory infections","ad","HLJ",0.01,0.01,0.01
+494,"Stroke","ad","HLJ",0.08,0.08,0.08
+294,"All causes","ad","HuB",2.11,2.11,2.12
+515,"Asthma","ad","HuB",0,0,0
+491,"Cardiovascular diseases","ad","HuB",0.65,0.65,0.66
+509,"Chronic obstructive pulmonary disease","ad","HuB",0.03,0.03,0.03
+508,"Chronic respiratory diseases","ad","HuB",0.04,0.04,0.04
+493,"Ischemic heart disease","ad","HuB",0.46,0.46,0.46
+322,"Lower respiratory infections","ad","HuB",0.02,0.02,0.02
+494,"Stroke","ad","HuB",0.28,0.28,0.28
+294,"All causes","ad","HuN",1.24,1.24,1.24
+515,"Asthma","ad","HuN",0,0,0
+491,"Cardiovascular diseases","ad","HuN",0.36,0.36,0.36
+509,"Chronic obstructive pulmonary disease","ad","HuN",0.02,0.02,0.02
+508,"Chronic respiratory diseases","ad","HuN",0.03,0.03,0.03
+493,"Ischemic heart disease","ad","HuN",0.27,0.26,0.27
+322,"Lower respiratory infections","ad","HuN",0.01,0.01,0.01
+494,"Stroke","ad","HuN",0.16,0.16,0.16
+294,"All causes","ad","JL",0.74,0.74,0.74
+515,"Asthma","ad","JL",0,0,0
+491,"Cardiovascular diseases","ad","JL",0.2,0.2,0.2
+509,"Chronic obstructive pulmonary disease","ad","JL",0.01,0.01,0.01
+508,"Chronic respiratory diseases","ad","JL",0.02,0.02,0.02
+493,"Ischemic heart disease","ad","JL",0.16,0.16,0.16
+322,"Lower respiratory infections","ad","JL",0.01,0.01,0.01
+494,"Stroke","ad","JL",0.09,0.09,0.09
+294,"All causes","ad","JS",2.93,2.92,2.93
+515,"Asthma","ad","JS",0.01,0.01,0.01
+491,"Cardiovascular diseases","ad","JS",0.88,0.88,0.89
+509,"Chronic obstructive pulmonary disease","ad","JS",0.04,0.04,0.04
+508,"Chronic respiratory diseases","ad","JS",0.06,0.06,0.06
+493,"Ischemic heart disease","ad","JS",0.63,0.63,0.63
+322,"Lower respiratory infections","ad","JS",0.03,0.03,0.03
+494,"Stroke","ad","JS",0.38,0.38,0.38
+294,"All causes","ad","JX",0.99,0.99,0.99
+515,"Asthma","ad","JX",0,0,0
+491,"Cardiovascular diseases","ad","JX",0.29,0.29,0.29
+509,"Chronic obstructive pulmonary disease","ad","JX",0.01,0.01,0.01
+508,"Chronic respiratory diseases","ad","JX",0.02,0.02,0.02
+493,"Ischemic heart disease","ad","JX",0.21,0.21,0.21
+322,"Lower respiratory infections","ad","JX",0.01,0.01,0.01
+494,"Stroke","ad","JX",0.12,0.12,0.12
+294,"All causes","ad","LN",1.53,1.53,1.54
+515,"Asthma","ad","LN",0,0,0
+491,"Cardiovascular diseases","ad","LN",0.45,0.44,0.45
+509,"Chronic obstructive pulmonary disease","ad","LN",0.02,0.02,0.02
+508,"Chronic respiratory diseases","ad","LN",0.03,0.03,0.03
+493,"Ischemic heart disease","ad","LN",0.33,0.33,0.33
+322,"Lower respiratory infections","ad","LN",0.02,0.02,0.02
+494,"Stroke","ad","LN",0.19,0.19,0.19
+294,"All causes","ad","NMG",0.41,0.41,0.41
+515,"Asthma","ad","NMG",0,0,0
+491,"Cardiovascular diseases","ad","NMG",0.11,0.11,0.11
+509,"Chronic obstructive pulmonary disease","ad","NMG",0.01,0.01,0.01
+508,"Chronic respiratory diseases","ad","NMG",0.01,0.01,0.01
+493,"Ischemic heart disease","ad","NMG",0.09,0.09,0.09
+322,"Lower respiratory infections","ad","NMG",0,0,0
+494,"Stroke","ad","NMG",0.05,0.05,0.05
+294,"All causes","ad","other",1.27,1.27,1.28
+515,"Asthma","ad","other",0,0,0
+491,"Cardiovascular diseases","ad","other",0.33,0.33,0.33
+509,"Chronic obstructive pulmonary disease","ad","other",0.02,0.02,0.02
+508,"Chronic respiratory diseases","ad","other",0.03,0.03,0.03
+493,"Ischemic heart disease","ad","other",0.27,0.27,0.27
+322,"Lower respiratory infections","ad","other",0.01,0.01,0.01
+494,"Stroke","ad","other",0.14,0.14,0.14
+294,"All causes","ad","SC",2.72,2.72,2.72
+515,"Asthma","ad","SC",0.01,0.01,0.01
+491,"Cardiovascular diseases","ad","SC",0.77,0.77,0.78
+509,"Chronic obstructive pulmonary disease","ad","SC",0.04,0.04,0.04
+508,"Chronic respiratory diseases","ad","SC",0.06,0.06,0.06
+493,"Ischemic heart disease","ad","SC",0.58,0.58,0.58
+322,"Lower respiratory infections","ad","SC",0.03,0.03,0.03
+494,"Stroke","ad","SC",0.33,0.33,0.33
+294,"All causes","ad","SD",2.37,2.37,2.38
+515,"Asthma","ad","SD",0.01,0.01,0.01
+491,"Cardiovascular diseases","ad","SD",0.73,0.73,0.74
+509,"Chronic obstructive pulmonary disease","ad","SD",0.04,0.04,0.04
+508,"Chronic respiratory diseases","ad","SD",0.05,0.05,0.05
+493,"Ischemic heart disease","ad","SD",0.51,0.51,0.51
+322,"Lower respiratory infections","ad","SD",0.03,0.03,0.03
+494,"Stroke","ad","SD",0.31,0.31,0.32
+294,"All causes","ad","SH",2.17,2.17,2.18
+515,"Asthma","ad","SH",0,0,0
+491,"Cardiovascular diseases","ad","SH",0.61,0.61,0.61
+509,"Chronic obstructive pulmonary disease","ad","SH",0.03,0.03,0.03
+508,"Chronic respiratory diseases","ad","SH",0.04,0.04,0.04
+493,"Ischemic heart disease","ad","SH",0.46,0.46,0.46
+322,"Lower respiratory infections","ad","SH",0.02,0.02,0.02
+494,"Stroke","ad","SH",0.26,0.26,0.26
+294,"All causes","ad","SX",1.11,1.11,1.11
+515,"Asthma","ad","SX",0,0,0
+491,"Cardiovascular diseases","ad","SX",0.37,0.37,0.37
+509,"Chronic obstructive pulmonary disease","ad","SX",0.02,0.02,0.02
+508,"Chronic respiratory diseases","ad","SX",0.02,0.02,0.02
+493,"Ischemic heart disease","ad","SX",0.24,0.24,0.24
+322,"Lower respiratory infections","ad","SX",0.01,0.01,0.01
+494,"Stroke","ad","SX",0.16,0.16,0.16
+294,"All causes","ad","SXi",1.61,1.61,1.61
+515,"Asthma","ad","SXi",0,0,0
+491,"Cardiovascular diseases","ad","SXi",0.51,0.51,0.51
+509,"Chronic obstructive pulmonary disease","ad","SXi",0.02,0.02,0.02
+508,"Chronic respiratory diseases","ad","SXi",0.03,0.03,0.03
+493,"Ischemic heart disease","ad","SXi",0.35,0.35,0.35
+322,"Lower respiratory infections","ad","SXi",0.02,0.02,0.02
+494,"Stroke","ad","SXi",0.22,0.22,0.22
+294,"All causes","ad","TJ",1.88,1.88,1.88
+515,"Asthma","ad","TJ",0,0,0
+491,"Cardiovascular diseases","ad","TJ",0.63,0.63,0.63
+509,"Chronic obstructive pulmonary disease","ad","TJ",0.03,0.03,0.03
+508,"Chronic respiratory diseases","ad","TJ",0.04,0.04,0.04
+493,"Ischemic heart disease","ad","TJ",0.41,0.41,0.41
+322,"Lower respiratory infections","ad","TJ",0.02,0.02,0.02
+494,"Stroke","ad","TJ",0.27,0.27,0.27
+294,"All causes","ad","XJ",0.75,0.75,0.75
+515,"Asthma","ad","XJ",0,0,0
+491,"Cardiovascular diseases","ad","XJ",0.24,0.24,0.24
+509,"Chronic obstructive pulmonary disease","ad","XJ",0.01,0.01,0.01
+508,"Chronic respiratory diseases","ad","XJ",0.02,0.02,0.02
+493,"Ischemic heart disease","ad","XJ",0.16,0.16,0.16
+322,"Lower respiratory infections","ad","XJ",0.01,0.01,0.01
+494,"Stroke","ad","XJ",0.1,0.1,0.1
+294,"All causes","ad","YN",0.57,0.57,0.57
+515,"Asthma","ad","YN",0,0,0
+491,"Cardiovascular diseases","ad","YN",0.14,0.14,0.14
+509,"Chronic obstructive pulmonary disease","ad","YN",0.01,0.01,0.01
+508,"Chronic respiratory diseases","ad","YN",0.01,0.01,0.01
+493,"Ischemic heart disease","ad","YN",0.12,0.12,0.12
+322,"Lower respiratory infections","ad","YN",0.01,0.01,0.01
+494,"Stroke","ad","YN",0.06,0.06,0.06
+294,"All causes","ad","ZJ",2.14,2.13,2.14
+515,"Asthma","ad","ZJ",0,0,0
+491,"Cardiovascular diseases","ad","ZJ",0.6,0.6,0.6
+509,"Chronic obstructive pulmonary disease","ad","ZJ",0.03,0.03,0.03
+508,"Chronic respiratory diseases","ad","ZJ",0.04,0.04,0.04
+493,"Ischemic heart disease","ad","ZJ",0.45,0.45,0.45
+322,"Lower respiratory infections","ad","ZJ",0.02,0.02,0.02
+494,"Stroke","ad","ZJ",0.26,0.26,0.26
+294,"All causes","aY","AH",79.21,79.06,79.35
+515,"Asthma","aY","AH",0.18,0.18,0.18
+491,"Cardiovascular diseases","aY","AH",23.68,23.57,23.79
+509,"Chronic obstructive pulmonary disease","aY","AH",1.03,1.02,1.03
+508,"Chronic respiratory diseases","aY","AH",1.5,1.5,1.51
+493,"Ischemic heart disease","aY","AH",16.3,16.28,16.32
+322,"Lower respiratory infections","aY","AH",0.93,0.93,0.94
+494,"Stroke","aY","AH",9.98,9.93,10.03
+294,"All causes","aY","BJ",139.22,139.04,139.41
+515,"Asthma","aY","BJ",0.32,0.32,0.32
+491,"Cardiovascular diseases","aY","BJ",43.19,43.04,43.33
+509,"Chronic obstructive pulmonary disease","aY","BJ",1.8,1.8,1.81
+508,"Chronic respiratory diseases","aY","BJ",2.65,2.64,2.65
+493,"Ischemic heart disease","aY","BJ",28.89,28.86,28.91
+322,"Lower respiratory infections","aY","BJ",1.65,1.65,1.66
+494,"Stroke","aY","BJ",18.17,18.11,18.23
+294,"All causes","aY","CQ",43.58,43.54,43.63
+515,"Asthma","aY","CQ",0.1,0.1,0.1
+491,"Cardiovascular diseases","aY","CQ",11.87,11.84,11.91
+509,"Chronic obstructive pulmonary disease","aY","CQ",0.57,0.57,0.57
+508,"Chronic respiratory diseases","aY","CQ",0.83,0.83,0.83
+493,"Ischemic heart disease","aY","CQ",8.86,8.85,8.87
+322,"Lower respiratory infections","aY","CQ",0.5,0.5,0.5
+494,"Stroke","aY","CQ",5.04,5.02,5.05
+294,"All causes","aY","FJ",59.22,59.13,59.3
+515,"Asthma","aY","FJ",0.12,0.12,0.12
+491,"Cardiovascular diseases","aY","FJ",13.21,13.17,13.26
+509,"Chronic obstructive pulmonary disease","aY","FJ",0.69,0.69,0.69
+508,"Chronic respiratory diseases","aY","FJ",1.01,1.01,1.02
+493,"Ischemic heart disease","aY","FJ",11.65,11.64,11.66
+322,"Lower respiratory infections","aY","FJ",0.63,0.63,0.63
+494,"Stroke","aY","FJ",5.56,5.54,5.58
+294,"All causes","aY","GD",225.75,225.42,226.09
+515,"Asthma","aY","GD",0.49,0.49,0.49
+491,"Cardiovascular diseases","aY","GD",55.29,55.09,55.49
+509,"Chronic obstructive pulmonary disease","aY","GD",2.76,2.75,2.77
+508,"Chronic respiratory diseases","aY","GD",4.04,4.03,4.06
+493,"Ischemic heart disease","aY","GD",44.99,44.96,45.03
+322,"Lower respiratory infections","aY","GD",2.51,2.51,2.52
+494,"Stroke","aY","GD",23.28,23.2,23.37
+294,"All causes","aY","GS",22.84,22.81,22.88
+515,"Asthma","aY","GS",0.05,0.05,0.05
+491,"Cardiovascular diseases","aY","GS",5.89,5.87,5.91
+509,"Chronic obstructive pulmonary disease","aY","GS",0.28,0.28,0.28
+508,"Chronic respiratory diseases","aY","GS",0.42,0.41,0.42
+493,"Ischemic heart disease","aY","GS",4.58,4.57,4.58
+322,"Lower respiratory infections","aY","GS",0.26,0.26,0.26
+494,"Stroke","aY","GS",2.48,2.47,2.49
+294,"All causes","aY","GX",32.27,32.22,32.32
+515,"Asthma","aY","GX",0.07,0.07,0.07
+491,"Cardiovascular diseases","aY","GX",8.54,8.5,8.57
+509,"Chronic obstructive pulmonary disease","aY","GX",0.42,0.42,0.42
+508,"Chronic respiratory diseases","aY","GX",0.61,0.61,0.61
+493,"Ischemic heart disease","aY","GX",6.54,6.53,6.55
+322,"Lower respiratory infections","aY","GX",0.37,0.36,0.37
+494,"Stroke","aY","GX",3.62,3.61,3.64
+294,"All causes","aY","GZ",19.01,18.99,19.04
+515,"Asthma","aY","GZ",0.04,0.04,0.04
+491,"Cardiovascular diseases","aY","GZ",4.45,4.43,4.46
+509,"Chronic obstructive pulmonary disease","aY","GZ",0.23,0.23,0.23
+508,"Chronic respiratory diseases","aY","GZ",0.33,0.33,0.33
+493,"Ischemic heart disease","aY","GZ",3.76,3.76,3.76
+322,"Lower respiratory infections","aY","GZ",0.21,0.21,0.21
+494,"Stroke","aY","GZ",1.87,1.86,1.88
+294,"All causes","aY","HaiN",7.04,7.04,7.05
+515,"Asthma","aY","HaiN",0.01,0.01,0.01
+491,"Cardiovascular diseases","aY","HaiN",1.27,1.26,1.27
+509,"Chronic obstructive pulmonary disease","aY","HaiN",0.07,0.07,0.07
+508,"Chronic respiratory diseases","aY","HaiN",0.11,0.11,0.11
+493,"Ischemic heart disease","aY","HaiN",1.35,1.35,1.35
+322,"Lower respiratory infections","aY","HaiN",0.06,0.06,0.06
+494,"Stroke","aY","HaiN",0.54,0.54,0.54
+294,"All causes","aY","HeB",134.54,134.32,134.76
+515,"Asthma","aY","HeB",0.31,0.31,0.31
+491,"Cardiovascular diseases","aY","HeB",42.15,41.98,42.32
+509,"Chronic obstructive pulmonary disease","aY","HeB",1.75,1.74,1.76
+508,"Chronic respiratory diseases","aY","HeB",2.56,2.56,2.57
+493,"Ischemic heart disease","aY","HeB",28.01,27.98,28.04
+322,"Lower respiratory infections","aY","HeB",1.6,1.59,1.6
+494,"Stroke","aY","HeB",17.75,17.67,17.82
+294,"All causes","aY","HeN",116.93,116.74,117.12
+515,"Asthma","aY","HeN",0.27,0.27,0.27
+491,"Cardiovascular diseases","aY","HeN",37.32,37.16,37.47
+509,"Chronic obstructive pulmonary disease","aY","HeN",1.52,1.51,1.52
+508,"Chronic respiratory diseases","aY","HeN",2.23,2.22,2.23
+493,"Ischemic heart disease","aY","HeN",24.47,24.44,24.49
+322,"Lower respiratory infections","aY","HeN",1.39,1.38,1.39
+494,"Stroke","aY","HeN",15.7,15.64,15.77
+294,"All causes","aY","HLJ",35.86,35.79,35.92
+515,"Asthma","aY","HLJ",0.08,0.08,0.08
+491,"Cardiovascular diseases","aY","HLJ",8.98,8.94,9.02
+509,"Chronic obstructive pulmonary disease","aY","HLJ",0.46,0.46,0.46
+508,"Chronic respiratory diseases","aY","HLJ",0.66,0.66,0.67
+493,"Ischemic heart disease","aY","HLJ",7.21,7.2,7.22
+322,"Lower respiratory infections","aY","HLJ",0.4,0.4,0.4
+494,"Stroke","aY","HLJ",3.81,3.8,3.83
+294,"All causes","aY","HuB",114.07,113.89,114.25
+515,"Asthma","aY","HuB",0.26,0.26,0.26
+491,"Cardiovascular diseases","aY","HuB",33.24,33.1,33.37
+509,"Chronic obstructive pulmonary disease","aY","HuB",1.47,1.46,1.47
+508,"Chronic respiratory diseases","aY","HuB",2.15,2.14,2.16
+493,"Ischemic heart disease","aY","HuB",23.34,23.32,23.36
+322,"Lower respiratory infections","aY","HuB",1.34,1.34,1.34
+494,"Stroke","aY","HuB",13.99,13.93,14.04
+294,"All causes","aY","HuN",66.8,66.68,66.91
+515,"Asthma","aY","HuN",0.15,0.15,0.15
+491,"Cardiovascular diseases","aY","HuN",18.43,18.35,18.51
+509,"Chronic obstructive pulmonary disease","aY","HuN",0.85,0.85,0.85
+508,"Chronic respiratory diseases","aY","HuN",1.25,1.24,1.25
+493,"Ischemic heart disease","aY","HuN",13.55,13.53,13.56
+322,"Lower respiratory infections","aY","HuN",0.77,0.77,0.78
+494,"Stroke","aY","HuN",7.76,7.73,7.79
+294,"All causes","aY","JL",39.5,39.45,39.55
+515,"Asthma","aY","JL",0.09,0.09,0.09
+491,"Cardiovascular diseases","aY","JL",10.2,10.17,10.23
+509,"Chronic obstructive pulmonary disease","aY","JL",0.51,0.51,0.51
+508,"Chronic respiratory diseases","aY","JL",0.73,0.73,0.74
+493,"Ischemic heart disease","aY","JL",7.95,7.94,7.95
+322,"Lower respiratory infections","aY","JL",0.45,0.44,0.45
+494,"Stroke","aY","JL",4.32,4.31,4.33
+294,"All causes","aY","JS",158.14,157.89,158.39
+515,"Asthma","aY","JS",0.36,0.36,0.36
+491,"Cardiovascular diseases","aY","JS",44.9,44.72,45.08
+509,"Chronic obstructive pulmonary disease","aY","JS",2.02,2.01,2.02
+508,"Chronic respiratory diseases","aY","JS",2.96,2.95,2.97
+493,"Ischemic heart disease","aY","JS",32.17,32.14,32.2
+322,"Lower respiratory infections","aY","JS",1.85,1.84,1.86
+494,"Stroke","aY","JS",18.89,18.81,18.96
+294,"All causes","aY","JX",53.53,53.44,53.62
+515,"Asthma","aY","JX",0.12,0.12,0.12
+491,"Cardiovascular diseases","aY","JX",14.68,14.62,14.74
+509,"Chronic obstructive pulmonary disease","aY","JX",0.68,0.68,0.68
+508,"Chronic respiratory diseases","aY","JX",1,0.99,1
+493,"Ischemic heart disease","aY","JX",10.83,10.82,10.84
+322,"Lower respiratory infections","aY","JX",0.62,0.62,0.62
+494,"Stroke","aY","JX",6.18,6.15,6.2
+294,"All causes","aY","LN",83.11,82.97,83.25
+515,"Asthma","aY","LN",0.19,0.19,0.19
+491,"Cardiovascular diseases","aY","LN",22.75,22.66,22.85
+509,"Chronic obstructive pulmonary disease","aY","LN",1.04,1.04,1.05
+508,"Chronic respiratory diseases","aY","LN",1.53,1.53,1.54
+493,"Ischemic heart disease","aY","LN",16.79,16.77,16.8
+322,"Lower respiratory infections","aY","LN",0.97,0.96,0.97
+494,"Stroke","aY","LN",9.56,9.52,9.6
+294,"All causes","aY","NMG",22.37,22.34,22.4
+515,"Asthma","aY","NMG",0.05,0.05,0.05
+491,"Cardiovascular diseases","aY","NMG",5.44,5.43,5.46
+509,"Chronic obstructive pulmonary disease","aY","NMG",0.27,0.27,0.27
+508,"Chronic respiratory diseases","aY","NMG",0.4,0.4,0.4
+493,"Ischemic heart disease","aY","NMG",4.45,4.45,4.45
+322,"Lower respiratory infections","aY","NMG",0.25,0.25,0.25
+494,"Stroke","aY","NMG",2.29,2.28,2.3
+294,"All causes","aY","other",68.09,67.97,68.21
+515,"Asthma","aY","other",0.15,0.15,0.15
+491,"Cardiovascular diseases","aY","other",16.5,16.43,16.57
+509,"Chronic obstructive pulmonary disease","aY","other",0.86,0.85,0.86
+508,"Chronic respiratory diseases","aY","other",1.24,1.23,1.24
+493,"Ischemic heart disease","aY","other",13.6,13.58,13.61
+322,"Lower respiratory infections","aY","other",0.75,0.74,0.75
+494,"Stroke","aY","other",7,6.97,7.03
+294,"All causes","aY","SC",146.73,146.46,147
+515,"Asthma","aY","SC",0.33,0.33,0.33
+491,"Cardiovascular diseases","aY","SC",39.15,38.97,39.33
+509,"Chronic obstructive pulmonary disease","aY","SC",1.85,1.85,1.86
+508,"Chronic respiratory diseases","aY","SC",2.71,2.7,2.72
+493,"Ischemic heart disease","aY","SC",29.6,29.57,29.64
+322,"Lower respiratory infections","aY","SC",1.68,1.68,1.69
+494,"Stroke","aY","SC",16.49,16.42,16.57
+294,"All causes","aY","SD",128.17,127.96,128.38
+515,"Asthma","aY","SD",0.29,0.29,0.29
+491,"Cardiovascular diseases","aY","SD",37.18,37.03,37.33
+509,"Chronic obstructive pulmonary disease","aY","SD",1.65,1.64,1.66
+508,"Chronic respiratory diseases","aY","SD",2.42,2.41,2.43
+493,"Ischemic heart disease","aY","SD",26.22,26.19,26.25
+322,"Lower respiratory infections","aY","SD",1.5,1.5,1.51
+494,"Stroke","aY","SD",15.65,15.59,15.72
+294,"All causes","aY","SH",117.3,117.1,117.51
+515,"Asthma","aY","SH",0.26,0.26,0.26
+491,"Cardiovascular diseases","aY","SH",30.85,30.72,30.99
+509,"Chronic obstructive pulmonary disease","aY","SH",1.48,1.47,1.48
+508,"Chronic respiratory diseases","aY","SH",2.16,2.15,2.17
+493,"Ischemic heart disease","aY","SH",23.61,23.59,23.64
+322,"Lower respiratory infections","aY","SH",1.34,1.34,1.35
+494,"Stroke","aY","SH",12.99,12.94,13.05
+294,"All causes","aY","SX",59.81,59.7,59.92
+515,"Asthma","aY","SX",0.14,0.14,0.14
+491,"Cardiovascular diseases","aY","SX",18.72,18.63,18.81
+509,"Chronic obstructive pulmonary disease","aY","SX",0.78,0.77,0.78
+508,"Chronic respiratory diseases","aY","SX",1.14,1.13,1.14
+493,"Ischemic heart disease","aY","SX",12.45,12.43,12.46
+322,"Lower respiratory infections","aY","SX",0.71,0.71,0.71
+494,"Stroke","aY","SX",7.88,7.84,7.92
+294,"All causes","aY","SXi",86.86,86.73,86.99
+515,"Asthma","aY","SXi",0.2,0.2,0.2
+491,"Cardiovascular diseases","aY","SXi",25.76,25.66,25.86
+509,"Chronic obstructive pulmonary disease","aY","SXi",1.12,1.12,1.13
+508,"Chronic respiratory diseases","aY","SXi",1.64,1.64,1.65
+493,"Ischemic heart disease","aY","SXi",17.83,17.82,17.85
+322,"Lower respiratory infections","aY","SXi",1.02,1.02,1.03
+494,"Stroke","aY","SXi",10.85,10.8,10.89
+294,"All causes","aY","TJ",101.44,101.24,101.64
+515,"Asthma","aY","TJ",0.23,0.23,0.23
+491,"Cardiovascular diseases","aY","TJ",31.97,31.81,32.13
+509,"Chronic obstructive pulmonary disease","aY","TJ",1.32,1.32,1.33
+508,"Chronic respiratory diseases","aY","TJ",1.94,1.93,1.94
+493,"Ischemic heart disease","aY","TJ",21.16,21.14,21.19
+322,"Lower respiratory infections","aY","TJ",1.2,1.2,1.21
+494,"Stroke","aY","TJ",13.46,13.39,13.53
+294,"All causes","aY","XJ",40.15,40.09,40.22
+515,"Asthma","aY","XJ",0.09,0.09,0.09
+491,"Cardiovascular diseases","aY","XJ",11.99,11.94,12.04
+509,"Chronic obstructive pulmonary disease","aY","XJ",0.54,0.54,0.54
+508,"Chronic respiratory diseases","aY","XJ",0.78,0.78,0.78
+493,"Ischemic heart disease","aY","XJ",8.28,8.27,8.29
+322,"Lower respiratory infections","aY","XJ",0.47,0.47,0.47
+494,"Stroke","aY","XJ",5.08,5.06,5.1
+294,"All causes","aY","YN",30.69,30.64,30.75
+515,"Asthma","aY","YN",0.06,0.06,0.07
+491,"Cardiovascular diseases","aY","YN",7.12,7.09,7.15
+509,"Chronic obstructive pulmonary disease","aY","YN",0.36,0.36,0.37
+508,"Chronic respiratory diseases","aY","YN",0.54,0.53,0.54
+493,"Ischemic heart disease","aY","YN",6.07,6.07,6.08
+322,"Lower respiratory infections","aY","YN",0.33,0.33,0.34
+494,"Stroke","aY","YN",3,2.98,3.01
+294,"All causes","aY","ZJ",115.32,115.14,115.49
+515,"Asthma","aY","ZJ",0.26,0.26,0.26
+491,"Cardiovascular diseases","aY","ZJ",30.43,30.31,30.54
+509,"Chronic obstructive pulmonary disease","aY","ZJ",1.45,1.44,1.45
+508,"Chronic respiratory diseases","aY","ZJ",2.12,2.11,2.13
+493,"Ischemic heart disease","aY","ZJ",23.2,23.18,23.22
+322,"Lower respiratory infections","aY","ZJ",1.32,1.32,1.33
+494,"Stroke","aY","ZJ",12.81,12.76,12.86
